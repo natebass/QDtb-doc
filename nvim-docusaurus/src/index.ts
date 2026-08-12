@@ -62,14 +62,14 @@ export default function nvimDocusaurusPlugin(
   context: LoadContext,
   options: PluginOptions,
 ): Plugin<void> {
-  const QdtbPath = options.QdtbPath ?? path.resolve(context.siteDir, "../QDtb");
+  const QDtbPath = options.QDtbPath ?? path.resolve(context.siteDir, "../QDtb");
   const outputBase = path.resolve(context.siteDir, "docs");
 
   return {
     name: "nvim-docusaurus",
 
     async loadContent() {
-      console.log(`\n🔌 nvim-docusaurus: Scanning ${QdtbPath}...`);
+      console.log(`\n🔌 nvim-docusaurus: Scanning ${QDtbPath}...`);
 
       // Clean previous generated docs
       ["colors", "config", "plugins", "other"].forEach((dir) => {
@@ -89,7 +89,7 @@ export default function nvimDocusaurusPlugin(
       fs.mkdirSync(outputBase, { recursive: true });
 
       // Find all Lua files
-      const luaFiles = findLuaFiles(QdtbPath);
+      const luaFiles = findLuaFiles(QDtbPath);
       console.log(`   Found ${luaFiles.length} Lua files`);
 
       const modules: LuaModule[] = [];
@@ -98,10 +98,10 @@ export default function nvimDocusaurusPlugin(
 
       for (const filePath of luaFiles) {
         const source = fs.readFileSync(filePath, "utf-8");
-        const { category, group: groupName } = getGroupInfo(filePath, QdtbPath);
+        const { category, group: groupName } = getGroupInfo(filePath, QDtbPath);
         const fileName = path.basename(filePath);
         const name = path.basename(filePath, ".lua");
-        const relativePath = path.relative(QdtbPath, filePath);
+        const relativePath = path.relative(QDtbPath, filePath);
 
         const moduleInfo = extractModuleInfo(source);
         const functions = extractFunctions(source);
@@ -110,7 +110,7 @@ export default function nvimDocusaurusPlugin(
         const mod: LuaModule = {
           name,
           moduleName:
-            moduleInfo.moduleName || getModuleName(filePath, QdtbPath),
+            moduleInfo.moduleName || getModuleName(filePath, QDtbPath),
           summary: moduleInfo.summary || `${name} module`,
           description: moduleInfo.description,
           filePath,
@@ -265,7 +265,7 @@ export default function nvimDocusaurusPlugin(
     },
 
     getPathsToWatch() {
-      return [path.join(QdtbPath, "**/*.lua")];
+      return [path.join(QDtbPath, "**/*.lua")];
     },
   };
 }

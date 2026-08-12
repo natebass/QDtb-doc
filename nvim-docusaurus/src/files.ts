@@ -35,8 +35,8 @@ export function findLuaFiles(dir: string, basePath: string = ""): string[] {
   return files;
 }
 
-export function categorizeFile(filePath: string, QdtbPath: string): string {
-  const rel = path.relative(QdtbPath, filePath);
+export function categorizeFile(filePath: string, QDtbPath: string): string {
+  const rel = path.relative(QDtbPath, filePath);
   if (rel === "init.lua") return "config";
   if (rel.startsWith("colors/") || rel.startsWith("colors\\")) return "colors";
   if (rel.startsWith("lua/config/") || rel.startsWith("lua\\config\\"))
@@ -46,18 +46,18 @@ export function categorizeFile(filePath: string, QdtbPath: string): string {
   return "other";
 }
 
-export function getModuleName(filePath: string, QdtbPath: string): string {
-  const rel = path.relative(QdtbPath, filePath);
+export function getModuleName(filePath: string, QDtbPath: string): string {
+  const rel = path.relative(QDtbPath, filePath);
   return rel
     .replace(/\.lua$/, "")
     .replace(/[\\/]/g, ".")
     .replace(/\.init$/, "");
 }
 
-export function getGroupInfo(filePath: string, QdtbPath: string) {
-  const rel = path.relative(QdtbPath, filePath);
+export function getGroupInfo(filePath: string, QDtbPath: string) {
+  const rel = path.relative(QDtbPath, filePath);
   const parts = rel.split(path.sep);
-  const category = categorizeFile(filePath, QdtbPath);
+  const category = categorizeFile(filePath, QDtbPath);
   if ((category === "plugins" || category === "config") && parts.length >= 4) {
     return { category, group: parts[2] };
   }

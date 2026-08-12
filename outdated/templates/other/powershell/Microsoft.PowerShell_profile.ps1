@@ -1,6 +1,6 @@
 ﻿
-Import-Module "/home/nwb/.local/share/powershell/Modules/Qdtb.SvgToReact/SvgToReact.psd1"
-Import-Module "/home/nwb/.local/share/powershell/Modules/Qdtb.Utility/DiosTeB.psd1"
+Import-Module "/home/nwb/.local/share/powershell/Modules/QDtb.SvgToReact/SvgToReact.psd1"
+Import-Module "/home/nwb/.local/share/powershell/Modules/QDtb.Utility/DiosTeB.psd1"
 
 <#
 Also check C:\Users\nateb\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1

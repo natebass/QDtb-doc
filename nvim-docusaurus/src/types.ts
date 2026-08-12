@@ -49,7 +49,7 @@ export interface ColorScheme {
 }
 
 export interface PluginOptions {
-  QdtbPath?: string;
+  QDtbPath?: string;
   outputDir?: string;
 }
 
