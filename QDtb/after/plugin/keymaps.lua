@@ -3,8 +3,9 @@
 --- @module config.keymaps
 
 local map = vim.keymap.set
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.cmd.packadd("vague.nvim")
+vim.cmd.packadd("leap.nvim")
+vim.cmd.packadd("focus.nvim")
 -- Special {{{
 -- Package JSON Check
 local package_json_path = "C:\\Users\\nateb\\Source\\Repos\\be-gccpilot03-py\\frontend\\package.json"
@@ -106,7 +107,7 @@ vim.keymap.set("n", "b", "mA")
 vim.keymap.set("n", "ds", "d/")
 map("n", "E", "<cmd>cd %:p:h<CR>")
 vim.keymap.set("n", "e", ":Startify<CR>", { silent = true })
--- vim.keymap.set('n', 'f', 'z')
+-- vim.keymap.set("n", "f", "z")
 vim.keymap.set("n", "fd", "zd")
 vim.keymap.set("n", "fE", "zE")
 vim.keymap.set("n", "ff", "zz")
