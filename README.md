@@ -6,9 +6,9 @@ This repository contains the _documentation_ for my personal Neovim configuratio
 > The main repository is [github.com/natebass/QDtb](https://github.com/natebass/QDtb).
 > The code should be periodically kept up to date by manually copy/pasting the code into the `QDtb/` folder.
 
-## Prerequisites
+## Requirements
 
-- Lua
+- Lua 5.1
 - LDoc
 - Node.js
 - PNPM
