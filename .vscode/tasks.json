@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-plugin",
+      "type": "shell",
+      "command": "pnpm build-plugin",
+      "problemMatcher": [],
+      "group": "build",
+      "detail": "Runs pnpm build-plugin before debugging build"
+    }
+  ]
+}

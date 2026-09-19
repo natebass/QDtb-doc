@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "sumneko.lua",
+    "ms-vscode.powershell",
+    "ms-dotnettools.csdevkit",
+    "pspester.pester-test"
+  ]
+}
