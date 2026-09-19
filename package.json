@@ -15,5 +15,15 @@
     "typecheck": "tsc",
     "build-plugin": "pnpm --filter nvim-docusaurus build",
     "watch-plugin": "pnpm --filter nvim-docusaurus watch"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.4.2",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": "^24 || >=26"
   }
 }
