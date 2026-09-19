@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/natebass/QDtb-doc/blob/master/screenshots/qdtb_logo.jpeg">
+  <img src="https://github.com/natebass/QDtb-doc/blob/master/documentation/static/img/logo.jpeg">
 </div>
 
 <hr>
@@ -27,54 +27,103 @@
     </a>
 </p></div>
 
-# QDtb Neovim Configuration
+# QDtb Neovim configuration
 
-Welcome to my personal Neovim configuration. It is partly based on [💤 lazy.nvim](https://github.com/folke/lazy.nvim) and uses mini.nvim plugins.
+Welcome to my personal Neovim configuration. It is partly based on [💤 lazy.nvim](https://github.com/folke/lazy.nvim) and uses many [mini.nvim](https://github.com/nvim-mini/mini.nvim) plugins.
 
 ![image](https://raw.githubusercontent.com/natebass/QDtb-doc/refs/heads/master/screenshots/screenshot_01.png)
 ![image](https://raw.githubusercontent.com/natebass/QDtb-doc/refs/heads/master/screenshots/screenshot_02.png)
 
 ## ✨ Features
 
-- 💻 Continue where you left off. Save and resume sessions with **Session Manager**. It uses mhinz/startify and mhinz/session. It loads a start screen by default.
-- 🧹 Sane default settings for options, autocmds, and keymaps.
-- 📦 Comes with a wealth of plugins pre-configured and ready to use.
+- 💻 Continue where you left off. Save and resume sessions with **Session Manager**. It uses mhinz/startify and mhinz/session.
 
-## ⚡️ Requirements
+## Requirements
 
 - Neovim >= **0.12**
 - A [Nerd Font](https://www.nerdfonts.com/) **_(recommended)_**
 
-## 🚀 Getting Started
+> [!WARNING]
+> Install with caution. This effects your Neovim configuration.
 
-1. Find your nvim configuration directory.
-2. Delete all files in that directory.
-3. Clone this repository into that directory.
+## Install
 
-> [!IMPORTANT]
-> You must manually clone the mini.nvim repository in `{stdpath('data')}/site/pack/core/start/`. Other plugins are automatically installed in {stdpath('data')}/site/pack/core/opt/.
+Clone into `stdpath("config")`.
 
-## 📂 File Structure
+## 📂 File structure
 
-This project follows a modular structure, separating core configuration from plugin-specific logic.
+Here is a breakdown of the Lua folder.
 
 <pre>
 ~/.config/nvim
-├── 📂 <b>colors</b>/              # Custom colorschemes and generators
+├── 📂 <b>colors</b>/
 │   ├── miniautumn.lua
-│   ├── minispring.lua
-│   └── neovim_colors.lua
 ├── 📂 <b>lua</b>/
 │   ├── 📂 <b>config</b>/          # Core configuration
 │   │   ├── autocmds.lua    # Automatic command definitions
 │   │   ├── keymaps.lua     # Global keybindings
 │   │   ├── mini.lua        # mini.nvim initialization
 │   │   └── options.lua     # Vim options and variables
-│   └── 📂 <b>plugins</b>/         # Modular plugin configs
-│       ├── 📂 <b>code_style</b>/  # Formatting and linting
-│       ├── 📂 <b>fold_this</b>/   # Advanced folding logic
-│       ├── 📂 <b>QDtb</b>/        # Custom utility scripts
-│       └── 📂 <b>session_manager</b>/ # Dashboard and sessions
-├── init.lua                # Main entry point
-└── nvim-pack-lock.json     # Plugin lockfile
+│   └── 📂 <b>plugins</b>/         # My custom plugins
+│       ├── 📂 <b>code_style</b>/
+│       ├── 📂 <b>QDtb</b>/        # General utility scripts
+├── init.lua
+└── nvim-pack-lock.json     # Plugin lockfile, using the native NVIM package manager.
 </pre>
+
+## Local data directory
+
+This project uses the native NVIM package manager. Here is the reccommeded folder sturcture
+**that must be created manually**.
+
+> [!NOTE]
+> Neovide Flatpak resolves `stdpath("data")` to its sandbox data directory.
+> On this machine that is `./data/nvim/`, but another installation or Flatpak
+> application ID will use a different path. Do not commit this directory.
+
+<pre>
+{stdpath("data")}
+├── mini-visits-index        # mini.visits persistent index
+├── session/                 # mini.sessions and session-manager state
+├── telescope_history        # Telescope picker history
+└── site/
+    ├── pack/
+    │   └── core/
+    │       ├── start/
+    │       │   └── mini.nvim/       # Always available at startup
+    │       └── opt/
+    │           ├── telescope.nvim/  # Native vim.pack-managed package
+    │           ├── nerdtree/
+    │           ├── copilot.vim/
+    │           └── ...              # Other optional native packages
+    ├── parser/              # Installed Tree-sitter parser binaries
+    ├── parser-info/         # Tree-sitter parser metadata
+    └── queries/             # Locally installed Tree-sitter queries
+</pre>
+
+### Plugin management and loading
+
+`plugin/packages.lua` is the authoritative list of non-mini plugins. It uses
+Neovim's built-in `vim.pack` API rather than a third-party package manager:
+
+- `vim.pack.add(..., { load = false })` installs missing packages and uses
+  `nvim-pack-lock.json` without sourcing every optional plugin during
+  startup.
+- Packages are stored under `site/pack/core/opt/` and loaded only when needed
+  with Neovim's built-in `:packadd` command.
+- Command-oriented plugins are loaded when their command is first used
+  (`:NERDTree`, `:Goyo`, `:Limelight`, `:Startify`, and `:TZNarrow`).
+- Copilot loads on first Insert mode entry and WakaTime after `VimEnter`.
+- `mini.nvim` remains a `start` package because core configuration requires
+  several `mini.*` modules during startup. Secondary mini modules initialize
+  after `VimEnter`.
+
+On a new computer, clone this configuration, install `mini.nvim` in
+`{stdpath("data")}/site/pack/core/start/mini.nvim`, then start Neovim. The
+native package declaration installs the remaining missing packages into the
+local `opt/` directory. Use `:lua vim.pack.update()` to refresh them, and keep
+the resulting `nvim-pack-lock.json` in Git to reproduce revisions.
+
+## Resources
+
+- The QDtb documentation repository https://github.com/natebass/QDtb-doc.
