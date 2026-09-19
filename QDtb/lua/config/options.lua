@@ -3,12 +3,17 @@
 local M = {}
 -- UI {{{
 -- vim.opt.guifont = "CaskaydiaCove NF:h12"
+-- vim.opt.guifont = 'Cascadia Code,Noto_Color_Emoji:h10'
+-- vim.opt.guifont = 'JetBrains Mono,Noto_Color_Emoji:h10'
+-- vim.opt.guifont = 'ComicShannsMono Nerd Font Mono,Noto_Color_Emoji:h11'
+
 vim.opt.guifont = "ComicShannsMono Nerd Font:h12"
 vim.o.linespace = 4
 vim.o.cmdheight = 0
 vim.o.laststatus = 3 -- Global statusline
 vim.o.winborder = "rounded"
 vim.o.title = true
+-- vim.opt.titlestring = "%t %(:%r%)%(:%m%) (%{expand('%:~:.:h')}) - Nvim"
 vim.o.ruler = false
 vim.o.showmode = false -- Redundant with statusline
 vim.o.number = false

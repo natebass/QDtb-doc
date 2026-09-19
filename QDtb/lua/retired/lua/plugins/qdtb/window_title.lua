@@ -1,16 +1,11 @@
---- Window Title Utility.
---- Sets the terminal window title based on the active Neovim buffer and project.
---- @module plugins.QDtb.window_title
-
+-- lua/utils/window_title.lua
 local M = {}
---- Sets the terminal window title using xdotool.
---- Note: This assumes nvim is running in a terminal.
---- @function set_terminal_title
---- @param title string The title to set.
+-- Function to set the terminal window title using xdotool
+-- Note: This assumes nvim is running in a terminal.
 function M.set_terminal_title(title)
 	-- Escape single quotes for shell command safety
 	local escaped_title = title:gsub("'", "'\\''")
-	local cmd = string.format("xdotool getactivewindow set_window_title '%s'", escaped_title)
+	local cmd = string.format("xdotool selectwindow getactivewindow set_window_title '%s'", escaped_title)
 	-- Or using wmctrl:
 	-- local cmd = string.format("wmctrl -F -r :ACTIVE: -T '%s'", escaped_title)
 	-- Execute the command asynchronously to avoid blocking Neovim
@@ -26,9 +21,8 @@ function M.set_terminal_title(title)
 		-- stderr_callback = function(chan, data, event) print(table.concat(data)) end,
 	})
 end
---- Sets the title based on the current buffer/project.
---- Extracts the current buffer name and working directory name.
---- @function set_nvim_window_title
+
+-- Function to set the title based on the current buffer/project
 function M.set_nvim_window_title()
 	-- Get current buffer name (if available)
 	local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t")
@@ -41,8 +35,9 @@ function M.set_nvim_window_title()
 		title = project_name
 	end
 	if title == "" then
-		title = "A Dios te bendiga" -- Default title
+		title = "Neovim" -- Default title
 	end
 	M.set_terminal_title(title)
 end
+
 return M

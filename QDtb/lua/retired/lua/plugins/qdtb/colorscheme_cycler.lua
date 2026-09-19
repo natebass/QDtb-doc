@@ -1,7 +1,3 @@
---- Colorscheme Cycler Utility.
---- Allows cycling through available colorschemes in Neovim.
---- @module plugins.QDtb.colorscheme_cycler
-
 -- Neovim colorscheme cycler utility
 -- lua/my_utils/colorscheme_cycler.lua
 
@@ -10,14 +6,12 @@ local M = {}
 M.colorschemes = {}
 M.current_colorscheme_index = 0
 
---- Initializes the list of colorschemes.
---- Gathers colorschemes from runtimepath.
---- @function init_colorschemes
+-- Function to initialize the list of colorschemes
 function M.init_colorschemes()
 	-- Get all files in 'colors/' directories within 'runtimepath'
 	local colors_path = vim.fn.globpath(vim.o.rtp, "colors/*.vim", 1, 1)
 
-	-- Extract just the names (e.g., "desert", "molokai")
+	-- Extract just the names (e.g., 'desert', 'molokai')
 	M.colorschemes = vim.tbl_map(function(path)
 		return vim.fn.fnamemodify(path, ":t:r")
 	end, colors_path)
@@ -41,9 +35,7 @@ function M.init_colorschemes()
 	end
 end
 
---- Applies the next colorscheme in the list.
---- Wraps around when reaching the end of the list.
---- @function next_colorscheme
+-- Function to apply the next colorscheme in the list
 function M.next_colorscheme()
 	-- Initialize colorschemes if not already done
 	if #M.colorschemes == 0 then
