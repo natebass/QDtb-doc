@@ -22,10 +22,12 @@ const faqs = [
     question: "Is this intended for public use?",
     answer: (
       <>
-        <b>Not really, and I caution against blindly installing code that has shell
-        access like this.</b> When Neovim plugins and PowerShell modules are ready
-        for the public they will be published as seperate repositories to
-        GitHub.
+        <b>
+          Not really, and I caution against blindly installing code that has
+          shell access like this.
+        </b>{" "}
+        When Neovim plugins and PowerShell modules are ready for the public they
+        will be published as seperate repositories to GitHub.
       </>
     ),
     slug: "public-use",
@@ -34,8 +36,9 @@ const faqs = [
     question: "How is the Lua documentation generated?",
     answer: (
       <>
-        LDoc annotations are parsed with a local Docusaurus plugin called nvim-docusaurus. This is a custom
-        hack and is not useful outside of this repository.
+        LDoc annotations are parsed with a local Docusaurus plugin called
+        nvim-docusaurus. This is a custom hack and is not useful outside of this
+        repository.
       </>
     ),
     slug: "generated-documentation",
@@ -63,7 +66,8 @@ const faqs = [
           https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-privacy.
         </li>
         <li>
-          Other plugins do not track users or collect data. But I can only speak for mine, see
+          Other plugins do not track users or collect data. But I can only speak
+          for mine, see
         </li>
       </ul>
     ),
@@ -73,7 +77,8 @@ const faqs = [
     question: "Security",
     answer: (
       <>
-        If you notice a security concern, I would appreciate it if you emailed me at nate.bass@outlook.com.
+        If you notice a security concern, I would appreciate it if you emailed
+        me at nate.bass@outlook.com.
       </>
     ),
     slug: "security",

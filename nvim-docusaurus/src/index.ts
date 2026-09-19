@@ -147,7 +147,9 @@ export default function nvimDocusaurusPlugin(
               const outDir = path.join(outputBase, "colors");
               fs.mkdirSync(outDir, { recursive: true });
               const outFile = path.join(outDir, `${mod.name}.mdx`);
-              if (writeGeneratedFile(outFile, generateColorSchemeMarkdown(scheme))) {
+              if (
+                writeGeneratedFile(outFile, generateColorSchemeMarkdown(scheme))
+              ) {
                 console.log(`   📝 Generated: colors/${mod.name}.mdx`);
               }
             }
@@ -164,12 +166,14 @@ export default function nvimDocusaurusPlugin(
           ];
           const written: string[] = [];
           for (const { name, gen } of configFiles) {
-            if (writeGeneratedFile(path.join(outDir, name), gen(info.modules))) {
+            if (
+              writeGeneratedFile(path.join(outDir, name), gen(info.modules))
+            ) {
               written.push(name);
             }
           }
           if (written.length > 0) {
-            console.log(`   📝 Generated: config/{${written.join(",")}}`);  
+            console.log(`   📝 Generated: config/{${written.join(",")}}`);
           }
         } else {
           const outDir = path.join(outputBase, info.category);
@@ -188,10 +192,15 @@ export default function nvimDocusaurusPlugin(
             PLUGINS_TO_CONSOLIDATE.includes(info.groupName)
           ) {
             const outFile = path.join(outDir, `${info.groupName}.md`);
-            if (writeGeneratedFile(
-              outFile,
-              generateConsolidatedModuleMarkdown(info.groupName, info.modules),
-            )) {
+            if (
+              writeGeneratedFile(
+                outFile,
+                generateConsolidatedModuleMarkdown(
+                  info.groupName,
+                  info.modules,
+                ),
+              )
+            ) {
               console.log(
                 `   📝 Generated: ${info.category}/${info.groupName}.md (consolidated)`,
               );
@@ -218,14 +227,16 @@ export default function nvimDocusaurusPlugin(
 
             // Generate index.md for the group
             const indexFile = path.join(groupDir, "index.md");
-            if (writeGeneratedFile(
-              indexFile,
-              generateCategoryIndexMarkdown(
-                info.groupName,
-                info.modules,
-                info.category,
-              ),
-            )) {
+            if (
+              writeGeneratedFile(
+                indexFile,
+                generateCategoryIndexMarkdown(
+                  info.groupName,
+                  info.modules,
+                  info.category,
+                ),
+              )
+            ) {
               console.log(
                 `   📝 Generated: ${info.category}/${info.groupName}/index.md`,
               );
@@ -236,10 +247,12 @@ export default function nvimDocusaurusPlugin(
 
       // Generate module index
       const modulesIndexFile = path.join(outputBase, "modules.md");
-      if (writeGeneratedFile(
-        modulesIndexFile,
-        generateIndexMarkdown(groups, colorSchemes),
-      )) {
+      if (
+        writeGeneratedFile(
+          modulesIndexFile,
+          generateIndexMarkdown(groups, colorSchemes),
+        )
+      ) {
         console.log(`   📝 Generated: modules.md`);
       }
 
