@@ -1,6 +1,5 @@
-
-function fish_title
-    set -l path (_long_path (pwd))
+function fish_title --description 'A title that includes the shortened pathname, git branch and git remote.'
+    set -l path (prompt_pwd)
 
     set -l command $argv[1]
 
@@ -19,9 +18,5 @@ function fish_title
         end
     end
 
-    if test "$command" = "fish"
-        echo "$path$git_info"
-    else
-        echo "$path$git_info"
-    end
+    echo "$path$git_info"
 end
