@@ -61,13 +61,38 @@ body {
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 
 .navbar {
-  backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: none;
 }
 
+/*
+ * The frosted-glass blur sits on a pseudo-element, not on `.navbar` itself.
+ * `backdrop-filter` makes an element the containing block for its
+ * `position: fixed` descendants, and Docusaurus renders the mobile menu
+ * (`.navbar-sidebar`) and its backdrop as children of `.navbar` — so filtering
+ * the navbar collapsed the opened menu into the 60px navbar box.
+ * The navbar is already `position: sticky`, so this anchors to it.
+ */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  pointer-events: none;
+}
+
 [data-theme="dark"] .navbar {
   background: rgba(15, 15, 26, 0.82);
+}
+
+/*
+ * The menu panel inherits the navbar's translucent colour, which only reads
+ * correctly over a blur. Give the panel an opaque surface of its own.
+ */
+.navbar-sidebar {
+  background-color: var(--ifm-background-surface-color);
 }
 
 .navbar__title {
