@@ -2,6 +2,11 @@ import type { LuaFunction, ColorInfo, ColorScheme } from "./types.js";
 
 // ── Module Info Extraction ───────────────────────────────────────────────────
 
+/** Strip the surrounding quotes LuaLS uses for `@module "name"` annotations */
+function unquote(text: string): string {
+  return text.replace(/^["'](.*)["']$/, "$1");
+}
+
 export function extractModuleInfo(source: string): {
   moduleName: string;
   summary: string;
@@ -32,7 +37,7 @@ export function extractModuleInfo(source: string): {
   }
 
   return {
-    moduleName: moduleMatch?.[1] ?? "",
+    moduleName: moduleMatch?.[1] ? unquote(moduleMatch[1]) : "",
     summary: summaryMatch?.[1]?.trim() ?? "",
     description: descLines.join("\n"),
   };
