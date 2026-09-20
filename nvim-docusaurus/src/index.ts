@@ -38,10 +38,7 @@ import type { ColorScheme } from "./types.js";
  * `styleText` drops the escape codes by itself when the stream is not a TTY,
  * so CI logs stay readable without a `process.env.CI` check of our own.
  */
-function paint(
-  format: Parameters<typeof styleText>[0],
-  text: string,
-): string {
+function paint(format: Parameters<typeof styleText>[0], text: string): string {
   return styleText(format, text, { stream: process.stdout });
 }
 
@@ -177,10 +174,7 @@ export default function nvimDocusaurusPlugin(
               fs.mkdirSync(outDir, { recursive: true });
               const outFile = path.join(outDir, `${mod.name}.mdx`);
               if (
-                writeGeneratedFile(
-                  outFile,
-                  generateColorSchemeMarkdown(scheme),
-                )
+                writeGeneratedFile(outFile, generateColorSchemeMarkdown(scheme))
               ) {
                 console.log(`   📝 Generated: colors/${mod.name}.mdx`);
               }
@@ -201,10 +195,7 @@ export default function nvimDocusaurusPlugin(
             const name = `${page}.md`;
             const gen = configGenerators[page];
             if (
-              writeGeneratedFile(
-                path.join(outDir, name),
-                gen(info.modules),
-              )
+              writeGeneratedFile(path.join(outDir, name), gen(info.modules))
             ) {
               written.push(name);
             }

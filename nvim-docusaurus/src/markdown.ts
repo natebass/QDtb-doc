@@ -250,7 +250,9 @@ export function generateCategoryIndexMarkdown(
 
   lines.push("---");
   lines.push(`title: ${yamlString(displayName)}`);
-  lines.push(`description: ${yamlString(`Overview of ${displayName} configuration`)}`);
+  lines.push(
+    `description: ${yamlString(`Overview of ${displayName} configuration`)}`,
+  );
   lines.push(`sidebar_label: ${yamlString(sidebarLabel)}`);
   lines.push(`sidebar_position: ${position}`);
   lines.push("generated: true");
@@ -290,7 +292,9 @@ export function generateConsolidatedModuleMarkdown(
 
   lines.push("---");
   lines.push(`title: ${yamlString(displayName)}`);
-  lines.push(`description: ${yamlString(`Documentation for the ${displayName} plugin`)}`);
+  lines.push(
+    `description: ${yamlString(`Documentation for the ${displayName} plugin`)}`,
+  );
   lines.push(`sidebar_label: ${yamlString(displayName)}`);
   lines.push(`sidebar_position: ${position}`);
   lines.push("generated: true");

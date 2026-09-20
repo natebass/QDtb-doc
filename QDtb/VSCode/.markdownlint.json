@@ -1,7 +1,7 @@
 {
-    "markdownlint.config": {
-        "MD025": {
-        "front_matter_title": ""
-        }
+  "markdownlint.config": {
+    "MD025": {
+      "front_matter_title": ""
     }
+  }
 }

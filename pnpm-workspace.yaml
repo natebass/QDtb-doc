@@ -3,5 +3,5 @@ packages:
   - nvim-docusaurus
 
 allowBuilds:
-  '@swc/core': true
+  "@swc/core": true
   core-js: true
