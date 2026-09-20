@@ -3,6 +3,18 @@ import { PLUGINS_TO_CONSOLIDATE } from "./files.js";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
+/**
+ * Quote a value for a YAML frontmatter field.
+ *
+ * Summaries and module names come from Lua comments and may contain quotes,
+ * colons, or backslashes, any of which break the frontmatter parser if
+ * interpolated raw. JSON string syntax is a valid subset of YAML's
+ * double-quoted style, so it escapes all of these correctly.
+ */
+function yamlString(value: string): string {
+  return JSON.stringify(value ?? "");
+}
+
 /** Format a name for display: replace underscores with spaces and title-case */
 function toDisplayName(name: string): string {
   return name.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -59,9 +71,9 @@ export function generateModuleMarkdown(
 
   if (includeFrontmatter) {
     lines.push("---");
-    lines.push(`title: "${mod.moduleName || mod.name}"`);
-    lines.push(`description: "${mod.summary}"`);
-    lines.push(`sidebar_label: "${mod.name}"`);
+    lines.push(`title: ${yamlString(mod.moduleName || mod.name)}`);
+    lines.push(`description: ${yamlString(mod.summary)}`);
+    lines.push(`sidebar_label: ${yamlString(mod.name)}`);
     lines.push("generated: true");
     lines.push("---");
     lines.push("");
@@ -221,9 +233,9 @@ export function generateCategoryIndexMarkdown(
   const position = groupName === "qdtb" ? 40 : 1;
 
   lines.push("---");
-  lines.push(`title: "${displayName}"`);
-  lines.push(`description: "Overview of ${displayName} configuration"`);
-  lines.push(`sidebar_label: "${sidebarLabel}"`);
+  lines.push(`title: ${yamlString(displayName)}`);
+  lines.push(`description: ${yamlString(`Overview of ${displayName} configuration`)}`);
+  lines.push(`sidebar_label: ${yamlString(sidebarLabel)}`);
   lines.push(`sidebar_position: ${position}`);
   lines.push("generated: true");
   lines.push("---");
@@ -261,9 +273,9 @@ export function generateConsolidatedModuleMarkdown(
   const position = positions[groupName] || 50;
 
   lines.push("---");
-  lines.push(`title: "${displayName}"`);
-  lines.push(`description: "Documentation for the ${displayName} plugin"`);
-  lines.push(`sidebar_label: "${displayName}"`);
+  lines.push(`title: ${yamlString(displayName)}`);
+  lines.push(`description: ${yamlString(`Documentation for the ${displayName} plugin`)}`);
+  lines.push(`sidebar_label: ${yamlString(displayName)}`);
   lines.push(`sidebar_position: ${position}`);
   lines.push("generated: true");
   lines.push("---");
@@ -303,9 +315,9 @@ export function generateColorSchemeMarkdown(scheme: ColorScheme): string {
   const lines: string[] = [];
 
   lines.push("---");
-  lines.push(`title: "${scheme.displayName}"`);
-  lines.push(`description: "${scheme.description}"`);
-  lines.push(`sidebar_label: "${scheme.displayName}"`);
+  lines.push(`title: ${yamlString(scheme.displayName)}`);
+  lines.push(`description: ${yamlString(scheme.description)}`);
+  lines.push(`sidebar_label: ${yamlString(scheme.displayName)}`);
   lines.push("generated: true");
   lines.push("---");
   lines.push("");
