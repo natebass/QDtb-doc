@@ -3,7 +3,7 @@
  * A premium dark-first design inspired by Neovim's aesthetic
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+/* Fonts are loaded from <head> via `stylesheets` in docusaurus.config.ts. */
 
 /* ── Design Tokens ────────────────────────────────────────────────────────── */
 
