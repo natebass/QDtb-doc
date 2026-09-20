@@ -29,20 +29,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # No `version` input: the action reads devEngines.packageManager from
-      # package.json (12.4.2), which keeps CI on the same pnpm as local. The
-      # pin here was 10, two majors behind what the repo declares.
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6.1.0
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
+      - name: Install pnpm and Node
+        uses: pnpm/setup@v2.1.0
         with:
-          node-version-file: ".nvmrc"
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          cache: true
+          require-lockfile: true
 
       - name: Build plugin
         run: pnpm build-plugin
