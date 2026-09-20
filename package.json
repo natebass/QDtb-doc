@@ -12,7 +12,7 @@
     "serve": "pnpm --filter documentation serve",
     "write-translations": "pnpm --filter documentation write-translations",
     "write-heading-ids": "pnpm --filter documentation write-heading-ids",
-    "typecheck": "tsc",
+    "typecheck": "pnpm -r typecheck",
     "build-plugin": "pnpm --filter nvim-docusaurus build",
     "watch-plugin": "pnpm --filter nvim-docusaurus watch"
   },

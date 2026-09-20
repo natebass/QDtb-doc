@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -11,6 +12,7 @@ import styles from "./index.module.css";
 
 const plugins = [
   {
+    id: "colorscheme-cycler",
     emoji: "🎨",
     title: "Colorscheme cycler",
     description:
@@ -18,6 +20,7 @@ const plugins = [
     link: "/docs/plugins/QDtb",
   },
   {
+    id: "other-plugins",
     title: "Other plugins",
     description: (
       <>
@@ -37,6 +40,7 @@ const plugins = [
     selectable: false,
   },
   {
+    id: "open-source-credits",
     emoji: "🙌",
     description: (
       <>
@@ -149,8 +153,9 @@ function PluginCard({
   link,
   selectable = true,
 }: {
+  id?: string;
   emoji?: string;
-  title: string;
+  title?: string;
   description: ReactNode;
   link?: string;
   selectable?: boolean;
@@ -173,16 +178,18 @@ function PluginCard({
       {emoji && (
         <div style={{ fontSize: "2rem", marginBottom: "12px" }}>{emoji}</div>
       )}
-      <h3
-        style={{
-          fontSize: "1.15rem",
-          fontWeight: 700,
-          marginBottom: "8px",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {title}
-      </h3>
+      {title && (
+        <h3
+          style={{
+            fontSize: "1.15rem",
+            fontWeight: 700,
+            marginBottom: "8px",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {title}
+        </h3>
+      )}
       <div
         style={{
           fontSize: "0.92rem",
@@ -287,9 +294,11 @@ export default function Home(): ReactNode {
               <h2 style={{ margin: 0 }}>Neovim plugins</h2>
               <img
                 height={32}
-                width={32}
-                src="img/neovim_outlined.png"
+                width={26}
+                src={useBaseUrl("/img/neovim_outlined.png")}
                 alt="Neovim logo"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div
@@ -301,7 +310,7 @@ export default function Home(): ReactNode {
               }}
             >
               {plugins.map((plugin) => (
-                <PluginCard key={plugin.title} {...plugin} />
+                <PluginCard key={plugin.id} {...plugin} />
               ))}
             </div>
           </div>
