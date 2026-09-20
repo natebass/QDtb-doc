@@ -25,19 +25,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
+      # No `version` input: the action reads devEngines.packageManager from
+      # package.json (12.4.2), which keeps CI on the same pnpm as local. The
+      # pin here was 10, two majors behind what the repo declares.
       - name: Install pnpm
-        uses: pnpm/action-setup@v5
-        with:
-          version: 10
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 25
+          node-version-file: ".nvmrc"
           cache: "pnpm"
 
       - name: Install dependencies
@@ -50,9 +51,7 @@ jobs:
         env:
           BASE_URL: /${{ github.event.repository.name }}/
           URL: https://${{ github.repository_owner }}.github.io
-        run: |
-          mkdir -p documentation/docs
-          pnpm build
+        run: pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
