@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { globSync } from "node:fs";
+import path from "node:path";
 
 export const PLUGINS_TO_CONSOLIDATE = [
   "code_style",
@@ -16,32 +16,37 @@ export const PLUGINS_TO_CONSOLIDATE = [
  */
 export const CONFIG_PAGES = ["init", "options", "keymaps"] as const;
 
-export function findLuaFiles(dir: string, basePath: string = ""): string[] {
-  const files: string[] = [];
-  if (!fs.existsSync(dir)) return files;
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (
-        ["doc", "node_modules", ".git", "domscheme-main"].includes(entry.name)
-      )
-        continue;
-      files.push(
-        ...findLuaFiles(
-          fullPath,
-          basePath ? `${basePath}/${entry.name}` : entry.name,
-        ),
-      );
-    } else if (
-      entry.name.endsWith(".lua") &&
-      entry.name !== "dkjson.lua" &&
-      entry.name !== "dump.lua"
-    ) {
-      files.push(fullPath);
-    }
+/** Directories that never contain documentable configuration. */
+const SKIP_ENTRIES = new Set([
+  "doc",
+  "node_modules",
+  ".git",
+  "domscheme-main",
+  // Vendored third-party Lua, not part of the configuration.
+  "dkjson.lua",
+  "dump.lua",
+]);
+
+/**
+ * Absolute paths of every documentable Lua file under `dir`, sorted.
+ *
+ * Synchronous on purpose — see the note on `loadContent` in index.ts.
+ *
+ * Sorted so the generated module index is byte-identical between builds on
+ * machines whose filesystems enumerate directories in different orders.
+ */
+export function findLuaFiles(dir: string): string[] {
+  try {
+    return globSync("**/*.lua", {
+      cwd: dir,
+      exclude: (name) => SKIP_ENTRIES.has(name),
+    })
+      .map((relativePath) => path.join(dir, relativePath))
+      .sort();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
   }
-  return files;
 }
 
 export function categorizeFile(filePath: string, QDtbPath: string): string {

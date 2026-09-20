@@ -1,6 +1,7 @@
 import type { LoadContext, Plugin } from "@docusaurus/types";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
+import { styleText } from "node:util";
 
 import type { LuaModule, PluginOptions, GroupMap } from "./types.js";
 import {
@@ -32,13 +33,32 @@ import type { ColorScheme } from "./types.js";
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
+ * Colourise for a terminal, plain for a log file.
+ *
+ * `styleText` drops the escape codes by itself when the stream is not a TTY,
+ * so CI logs stay readable without a `process.env.CI` check of our own.
+ */
+function paint(
+  format: Parameters<typeof styleText>[0],
+  text: string,
+): string {
+  return styleText(format, text, { stream: process.stdout });
+}
+
+/**
  * Check whether a doc file is manually managed (not auto-generated).
  * A file is manual if it exists and does NOT contain `generated: true`
  * in its YAML frontmatter.
  */
 function isManualDoc(filePath: string): boolean {
-  if (!fs.existsSync(filePath)) return false;
-  const content = fs.readFileSync(filePath, "utf-8");
+  let content: string;
+  try {
+    content = fs.readFileSync(filePath, "utf-8");
+  } catch (error) {
+    // Nothing there to protect, so it is ours to write.
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+    throw error;
+  }
   const fmMatch = content.match(/^---([\s\S]*?)---/);
   if (!fmMatch) return true; // No frontmatter at all → treat as manual
   return !fmMatch[1].includes("generated: true");
@@ -50,7 +70,9 @@ function isManualDoc(filePath: string): boolean {
  */
 function writeGeneratedFile(filePath: string, content: string): boolean {
   if (isManualDoc(filePath)) {
-    console.log(`   ⏭️  Skipped (manual): ${path.basename(filePath)}`);
+    console.log(
+      `   ${paint("yellow", "⏭️  Skipped (manual)")}: ${path.basename(filePath)}`,
+    );
     return false;
   }
   fs.writeFileSync(filePath, content);
@@ -69,22 +91,28 @@ export default function nvimDocusaurusPlugin(
   return {
     name: "nvim-docusaurus",
 
+    /**
+     * Regenerate `documentation/docs/**` from the Lua sources.
+     *
+     * Every file operation here is deliberately synchronous. Docusaurus runs
+     * all plugins' `loadContent` concurrently (`Promise.all` in
+     * core/lib/server/plugins/plugins.js), and the docs content plugin reads
+     * the very directories this method deletes and rewrites. Blocking the
+     * event loop is what keeps that regeneration atomic from its point of
+     * view; awaiting anything in here lets it observe a half-written docs tree
+     * and fail with "No docs found in ...".
+     */
     async loadContent() {
-      console.log(`\n🔌 nvim-docusaurus: Scanning ${QDtbPath}...`);
+      console.log(
+        `\n🔌 ${paint("bold", "nvim-docusaurus")}: Scanning ${QDtbPath}...`,
+      );
 
-      // Clean previous generated docs
-      ["colors", "config", "plugins", "other"].forEach((dir) => {
-        const p = path.join(outputBase, dir);
-        if (fs.existsSync(p)) {
-          fs.rmSync(p, { recursive: true, force: true });
-        }
-      });
-      ["_sidebar.json"].forEach((file) => {
-        const p = path.join(outputBase, file);
-        if (fs.existsSync(p)) {
-          fs.unlinkSync(p);
-        }
-      });
+      // Clean previous generated docs. `force` already swallows ENOENT, so
+      // there is no need to stat each path first.
+      for (const dir of ["colors", "config", "plugins", "other"]) {
+        fs.rmSync(path.join(outputBase, dir), { recursive: true, force: true });
+      }
+      fs.rmSync(path.join(outputBase, "_sidebar.json"), { force: true });
 
       // Ensure output directory exists
       fs.mkdirSync(outputBase, { recursive: true });
@@ -149,7 +177,10 @@ export default function nvimDocusaurusPlugin(
               fs.mkdirSync(outDir, { recursive: true });
               const outFile = path.join(outDir, `${mod.name}.mdx`);
               if (
-                writeGeneratedFile(outFile, generateColorSchemeMarkdown(scheme))
+                writeGeneratedFile(
+                  outFile,
+                  generateColorSchemeMarkdown(scheme),
+                )
               ) {
                 console.log(`   📝 Generated: colors/${mod.name}.mdx`);
               }
@@ -170,7 +201,10 @@ export default function nvimDocusaurusPlugin(
             const name = `${page}.md`;
             const gen = configGenerators[page];
             if (
-              writeGeneratedFile(path.join(outDir, name), gen(info.modules))
+              writeGeneratedFile(
+                path.join(outDir, name),
+                gen(info.modules),
+              )
             ) {
               written.push(name);
             }
@@ -266,17 +300,22 @@ export default function nvimDocusaurusPlugin(
       console.log(`   📝 Generated: _sidebar.json`);
 
       console.log(
-        `\n✅ nvim-docusaurus: Generated docs for ${modules.length} modules (${groups.size} groups) and ${colorSchemes.length} color schemes\n`,
+        paint(
+          "green",
+          `\n✅ nvim-docusaurus: Generated docs for ${modules.length} modules (${groups.size} groups) and ${colorSchemes.length} color schemes\n`,
+        ),
       );
     },
 
     async contentLoaded({ actions }) {
       const sidebarPath = path.join(outputBase, "_sidebar.json");
-      if (fs.existsSync(sidebarPath)) {
+      try {
         const sidebarData = JSON.parse(fs.readFileSync(sidebarPath, "utf-8"));
         actions.setGlobalData({
           apiSidebar: sidebarData,
         });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       }
     },
 
