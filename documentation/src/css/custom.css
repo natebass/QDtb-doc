@@ -26,6 +26,10 @@
   --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.12);
   --ifm-border-radius: 8px;
   --ifm-global-radius: 8px;
+
+  /* Site-specific tokens (prefixed so they never collide with Infima's). */
+  --qdtb-hero-background: #1a67c8;
+  --qdtb-surface-border: var(--ifm-color-emphasis-200);
 }
 
 [data-theme="dark"] {
@@ -41,6 +45,7 @@
   --ifm-navbar-background-color: rgba(15, 15, 26, 0.85);
   --ifm-footer-background-color: #0a0a14;
   --docusaurus-highlighted-code-line-bg: rgba(129, 140, 248, 0.15);
+  --qdtb-surface-border: rgba(255, 255, 255, 0.06);
 }
 
 /* ── Global ───────────────────────────────────────────────────────────────── */
@@ -56,6 +61,39 @@ body {
 
 [data-theme="dark"] body {
   background: #0f0f1a;
+}
+
+/*
+ * Infima ships no `:focus-visible` styling, so keyboard focus was invisible on
+ * buttons, cards and the hero links (WCAG 2.4.7).
+ */
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.hero :focus-visible {
+  outline-color: #ffffff;
+}
+
+/*
+ * Infima zeroes its own transition tokens under reduced motion, but not the
+ * smooth scrolling, transitions and transforms declared in this file.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
@@ -99,11 +137,6 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
   font-size: 1.15rem;
-  /* background: linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #a78bfa 100%); */
-  background: transparent;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .navbar__link {
@@ -313,32 +346,42 @@ table tbody tr:hover {
 
 /* ── Hero Section Override ────────────────────────────────────────────────── */
 .hero {
-  background-color: #1a67c8;
+  background-color: var(--qdtb-hero-background);
 }
 
+/*
+ * Fluid type: 3.5rem overflowed its line box on phones and wrapped the title
+ * onto three lines. `clamp()` scales it with the viewport instead.
+ */
 .hero__title {
-  font-size: 3.5rem !important;
+  font-size: clamp(2.25rem, 8vw, 3.5rem) !important;
   font-weight: 900 !important;
   letter-spacing: -0.04em;
   line-height: 1.1 !important;
-  background: #ffffff;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
+  text-wrap: balance;
 }
 
 .hero__subtitle {
-  font-size: 1.5rem !important;
+  font-size: clamp(1.125rem, 4vw, 1.5rem) !important;
   font-weight: 500;
-  opacity: 0.7;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
-  color: #ffffff;
+  /* Was `opacity: 0.7`, which dropped contrast on the blue to 3.5:1. */
+  color: rgba(255, 255, 255, 0.92);
+  text-wrap: pretty;
 }
 
 /* ── Scrollbar ────────────────────────────────────────────────────────────── */
 
+/* Standard properties — these are what Firefox and current Chrome honour. */
+[data-theme="dark"] * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* WebKit fallback for older Safari, which has no `scrollbar-color`. */
 [data-theme="dark"] ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -394,8 +437,20 @@ table tbody tr:hover {
   color: var(--ifm-color-primary);
 }
 
-/* Smooth animations */
-* {
+/*
+ * Colour-transition the surfaces that actually change between themes. This was
+ * previously a `*` rule, which attached a transition to every node on the page
+ * — thousands of them on a long API doc — and made theme switching stutter.
+ */
+.navbar,
+.footer,
+.menu__link,
+.card,
+.pagination-nav__link,
+.theme-doc-sidebar-container,
+table,
+table tbody tr,
+.markdown blockquote {
   transition-property: background-color, border-color, box-shadow;
   transition-duration: 0.15s;
   transition-timing-function: ease;
