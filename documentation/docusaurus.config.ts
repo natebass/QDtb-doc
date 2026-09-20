@@ -110,11 +110,11 @@ const config: Config = {
           items: [
             {
               label: "Keymaps",
-              to: "/docs/config/index#configkeymaps",
+              to: "/docs/config/keymaps",
             },
             {
               label: "Options",
-              to: "/docs/config/index#configoptions",
+              to: "/docs/config/options",
             },
           ],
         },
