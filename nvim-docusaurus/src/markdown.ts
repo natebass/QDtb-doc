@@ -1,5 +1,5 @@
 import type { LuaModule, ColorScheme, GroupMap } from "./types.js";
-import { PLUGINS_TO_CONSOLIDATE } from "./files.js";
+import { CONFIG_PAGES, PLUGINS_TO_CONSOLIDATE } from "./files.js";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -45,6 +45,22 @@ function headingSlug(text: string): string {
  * - When `moduleName` matches `groupName`, the trailing segment is omitted
  *   so Docusaurus doesn't produce `/index` URLs.
  */
+/**
+ * Join docs path segments, applying Docusaurus's category-index convention:
+ * a doc named `index` **or named after the folder that contains it** becomes
+ * that folder's page. `docs/other/other.md` is therefore served at
+ * `/docs/other`, not `/docs/other/other`.
+ */
+function docsUrl(...segments: (string | undefined)[]): string {
+  const parts = segments.filter((s): s is string => !!s);
+  const last = parts.at(-1);
+  const parent = parts.at(-2);
+  if (last === "index" || (parent !== undefined && last === parent)) {
+    parts.pop();
+  }
+  return `/docs/${parts.join("/")}`;
+}
+
 function docsLink(
   category: string,
   groupName: string,
@@ -52,12 +68,12 @@ function docsLink(
 ): string {
   // "index" groups represent the category root (e.g. config/index.md)
   if (groupName === "index") {
-    if (!moduleName) return `/docs/${category}`;
-    return `/docs/${category}/${moduleName}`;
+    return docsUrl(category, moduleName);
   }
-  const base = `/docs/${category}/${groupName}`;
-  if (!moduleName || moduleName === groupName) return base;
-  return `${base}/${moduleName}`;
+  if (!moduleName || moduleName === groupName) {
+    return docsUrl(category, groupName);
+  }
+  return docsUrl(category, groupName, moduleName);
 }
 
 // ── Individual Module Markdown ───────────────────────────────────────────────
@@ -433,10 +449,22 @@ export function generateIndexMarkdown(
           ? toDisplayName(info.category)
           : toDisplayName(groupName);
 
+      // The core config group is written out as one page per CONFIG_PAGES
+      // entry, so link to those rather than to a `/docs/config` root that is
+      // never generated.
+      if (cat === "config" && groupName === "index") {
+        const pages = CONFIG_PAGES.map(
+          (page) => `[${page}](${docsLink(cat, groupName, page)})`,
+        ).join(", ");
+        lines.push(
+          `| [${displayName}](${docsLink(cat, groupName, CONFIG_PAGES[0])}) | ${pages} |`,
+        );
+        continue;
+      }
+
       // Consolidated groups put all modules on one page (no individual pages)
       const isConsolidated =
-        (cat === "config" && groupName === "index") ||
-        (cat === "plugins" && PLUGINS_TO_CONSOLIDATE.includes(groupName));
+        cat === "plugins" && PLUGINS_TO_CONSOLIDATE.includes(groupName);
 
       const isFolder =
         !isConsolidated &&

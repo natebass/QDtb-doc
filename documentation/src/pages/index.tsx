@@ -15,7 +15,7 @@ const plugins = [
     title: "Colorscheme cycler",
     description:
       "Cycle through your exisiting installed color schemes with a keyboard shortcut.",
-    link: "/docs/plugins/QDtb/colorscheme_cycler",
+    link: "/docs/plugins/QDtb",
   },
   {
     title: "Other plugins",
@@ -43,7 +43,7 @@ const plugins = [
         <b>Shout out to open-source plugins</b> like{" "}
         <Link to="https://github.com/echasnovski/mini.nvim">mini.nvim</Link>.
         For a list of plugins included in QDtb, check out{" "}
-        <Link to="/docs/plugins/all">this page</Link>.
+        <Link to="/docs/modules">this page</Link>.
       </>
     ),
     selectable: false,

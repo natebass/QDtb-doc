@@ -7,6 +7,15 @@ export const PLUGINS_TO_CONSOLIDATE = [
   "fold_this",
 ];
 
+/**
+ * The pages the core `config` group is split across, in sidebar order.
+ *
+ * Shared between the writer (which emits `docs/config/<page>.md`) and the
+ * module index (which links to them). They drifted apart before: the index
+ * linked to a single consolidated `/docs/config` page that is never written.
+ */
+export const CONFIG_PAGES = ["init", "options", "keymaps"] as const;
+
 export function findLuaFiles(dir: string, basePath: string = ""): string[] {
   const files: string[] = [];
   if (!fs.existsSync(dir)) return files;

@@ -10,6 +10,7 @@ import {
   extractColors,
 } from "./parsers.js";
 import {
+  CONFIG_PAGES,
   PLUGINS_TO_CONSOLIDATE,
   findLuaFiles,
   getGroupInfo,
@@ -159,13 +160,15 @@ export default function nvimDocusaurusPlugin(
           const outDir = path.join(outputBase, "config");
           fs.mkdirSync(outDir, { recursive: true });
 
-          const configFiles = [
-            { name: "init.md", gen: generateInitConfigMarkdown },
-            { name: "options.md", gen: generateOptionsConfigMarkdown },
-            { name: "keymaps.md", gen: generateKeymapsConfigMarkdown },
-          ];
+          const configGenerators = {
+            init: generateInitConfigMarkdown,
+            options: generateOptionsConfigMarkdown,
+            keymaps: generateKeymapsConfigMarkdown,
+          } as const;
           const written: string[] = [];
-          for (const { name, gen } of configFiles) {
+          for (const page of CONFIG_PAGES) {
+            const name = `${page}.md`;
+            const gen = configGenerators[page];
             if (
               writeGeneratedFile(path.join(outDir, name), gen(info.modules))
             ) {
