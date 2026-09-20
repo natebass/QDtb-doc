@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import styles from "./faq.module.css";
 
@@ -27,7 +28,7 @@ const faqs = [
           shell access like this.
         </b>{" "}
         When Neovim plugins and PowerShell modules are ready for the public they
-        will be published as seperate repositories to GitHub.
+        will be published as separate repositories to GitHub.
       </>
     ),
     slug: "public-use",
@@ -67,7 +68,7 @@ const faqs = [
         </li>
         <li>
           Other plugins do not track users or collect data. But I can only speak
-          for mine, see
+          for mine, see the <Link to="/privacy">QDtb privacy policy</Link>.
         </li>
       </ul>
     ),

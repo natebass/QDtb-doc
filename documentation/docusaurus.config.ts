@@ -167,6 +167,10 @@ const config: Config = {
               label: "FAQ",
               to: "/faq",
             },
+            {
+              label: "Privacy Policy",
+              to: "/privacy",
+            },
           ],
         },
       ],
