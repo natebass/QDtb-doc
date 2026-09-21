@@ -41,12 +41,25 @@ function commentBody(line: string): string | null {
   return match[1].replace(/^\s?/, "").trimEnd();
 }
 
+/**
+ * A banner: a long run of one punctuation character with a word or two in it.
+ *
+ * `-- \u2193 -------- Learn \u270f\ufe0f -------- \u2193` is not a description of
+ * anything, but it is not pure decoration either, so the rule is structural:
+ * a repeated rule plus very little text means a section divider.
+ */
+const BANNER_RULE = /([-=~_*#\u2500\u2501.\u00b7])\1{3,}/u;
+
 /** True for a line that carries prose rather than decoration or a fold marker. */
 function isProse(text: string): boolean {
   if (text.length === 0) return false;
   if (DECORATION.test(text)) return false;
   if (FOLD_MARKER.test(text) && text.replace(FOLD_MARKER, "").trim() === "")
     return false;
+  if (BANNER_RULE.test(text)) {
+    const letters = text.replace(/[^\p{L}\p{N}]/gu, "").length;
+    if (letters <= 24) return false;
+  }
   return true;
 }
 
