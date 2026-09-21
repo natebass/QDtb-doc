@@ -34,7 +34,7 @@
   "notebook.markup.fontSize": 14,
   "notebook.insertFinalNewline": true,
   "files.exclude": {
-    "**/.git": false,
+    "**/.git": false
   },
   "files.autoSave": "onFocusChange",
   "files.defaultLanguage": "powershell",
@@ -63,7 +63,7 @@
     "workbench.action.toggleSidebarVisibility",
     "workbench.action.toggleAuxiliaryBar",
     "workbench.action.openGlobalKeybindings",
-    "workbench.action.openRecent",
+    "workbench.action.openRecent"
   ],
   // "powershell.integratedConsole.suppressStartupBanner": true,
   "powershell.pester.codeLens": false,
@@ -105,7 +105,7 @@
     "powershell": false,
     "jsonc": false,
     "typescriptreact": true,
-    "javascript": true,
+    "javascript": true
   },
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.chat.codesearch.enabled": true,
@@ -114,13 +114,20 @@
   "chat.permissions.default": "autopilot",
   "chat.mcp.gallery.enabled": true,
   "editor.tabCompletion": "on",
-  "cSpell.userWords": ["Cobex", "deca", "lexend", "nateb", "tabler", "turbopack"],
+  "cSpell.userWords": [
+    "Cobex",
+    "deca",
+    "lexend",
+    "nateb",
+    "tabler",
+    "turbopack"
+  ],
   "vscode-edge-devtools.headless": false,
   "js/ts.updateImportsOnFileMove.enabled": "always",
   "js/ts.experimental.useTsgo": true,
   "debug.openDebug": "neverOpen",
   "files.associations": {
-    "*.css": "tailwindcss",
+    "*.css": "tailwindcss"
   },
   "redhat.telemetry.enabled": true,
   "json.schemaDownload.trustedDomains": {
@@ -131,7 +138,7 @@
     "https://json.schemastore.org/": true,
     "https://json-schema.org/": true,
     "https://developer.microsoft.com/json-schemas/": true,
-    "https://biomejs.dev": true,
+    "https://biomejs.dev": true
   },
   "yaml.disableSchemaDetection": [
     "**/.github/workflows/*.yml",
@@ -139,16 +146,22 @@
     "**/.gitea/workflows/*.yml",
     "**/.gitea/workflows/*.yaml",
     "**/.forgejo/workflows/*.yml",
-    "**/.forgejo/workflows/*.yaml",
+    "**/.forgejo/workflows/*.yaml"
   ],
   "[dockercompose]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.autoIndent": "advanced",
-    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "ruff.lint.select": [],
-  "ruff.lint.ignore": ["ANN201", "ANN202", "ANN205", "ANN204", "ANN206"],
+  "ruff.lint.ignore": [
+    "ANN201",
+    "ANN202",
+    "ANN205",
+    "ANN204",
+    "ANN206"
+  ],
   // "editor.codeActionsOnSave": {
   //   "source.organizeImports": "always"
   // },
@@ -205,39 +218,39 @@
   "peacock.favoriteColors": [
     {
       "name": "Angular Red",
-      "value": "#dd0531",
+      "value": "#dd0531"
     },
     {
       "name": "Azure Blue",
-      "value": "#007fff",
+      "value": "#007fff"
     },
     {
       "name": "JavaScript Yellow",
-      "value": "#f9e64f",
+      "value": "#f9e64f"
     },
     {
       "name": "Mandalorian Blue",
-      "value": "#1857a4",
+      "value": "#1857a4"
     },
     {
       "name": "Node Green",
-      "value": "#215732",
+      "value": "#215732"
     },
     {
       "name": "React Blue",
-      "value": "#61dafb",
+      "value": "#61dafb"
     },
     {
       "name": "Something Different",
-      "value": "#832561",
+      "value": "#832561"
     },
     {
       "name": "Svelte Orange",
-      "value": "#ff3d00",
+      "value": "#ff3d00"
     },
     {
       "name": "Vue Green",
-      "value": "#42b883",
-    },
-  ],
+      "value": "#42b883"
+    }
+  ]
 }

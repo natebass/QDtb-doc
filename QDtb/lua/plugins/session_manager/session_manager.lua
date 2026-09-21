@@ -1,6 +1,7 @@
 --- Configure Startify for session management, custom headers, and bookmarks.
 --- @module "plugins.session_manager.session_manager"
 local utils = require("lib.utility")
+local sessions = require("plugins.session_manager.sessions")
 local g = vim.g
 -- General Settings {{{
 g.startify_enable_special = 0
@@ -9,66 +10,64 @@ g.startify_change_to_dir = 0
 g.startify_custom_header = require("plugins.session_manager.bible_verse").quotes()
 g.startify_custom_footer = require("plugins.session_manager.algorithm_quote").quotes()
 -- Custom Commands {{{
+local config_init = vim.fs.joinpath(vim.fn.stdpath("config"), "init.lua")
 g.startify_commands = {
 	{
-		["u"] = { "Update Plugins", "Lazy sync" },
-		["p"] = { "Packer Compile", "PackerCompile" },
+		["u"] = { "Update Plugins", "lua vim.pack.update()" },
+		["p"] = { "Plugin Status", "lua vim.print(vim.pack.get())" },
 	},
 	{
-		["e"] = { "Edit Neovim Config", "e ~/.config/nvim/init.lua" },
-		["s"] = { "Source Config", "source ~/.config/nvim/init.lua" },
+		["e"] = { "Edit Neovim Config", "edit " .. vim.fn.fnameescape(config_init) },
+		["s"] = { "Restart Neovim", "restart" },
 	},
 	{
-		["g"] = { "Git Status", "Gitsigns status_buffered" },
+		["g"] = { "Git Status", "Git status" },
 		["f"] = { "Find Files (Telescope)", "Telescope find_files" },
 	},
 }
 -- }}}
 -- List Order and Types {{{
+--- Builds a Startify list provider that runs `git` with the given arguments and
+--- returns one entry per reported file. Errors (no repository, no git) yield no entries.
+--- @param args string[] Arguments passed to git, without the leading "git".
+--- @return fun(): table[]
+local function git_files(args)
+	return function()
+		local result = vim.system(vim.list_extend({ "git" }, args), { text = true }):wait()
+		if result.code ~= 0 then
+			return {}
+		end
+		local files = {}
+		for line in (result.stdout or ""):gmatch("[^\n]+") do
+			if line:match("%S") then
+				table.insert(files, { line = line, path = line })
+			end
+		end
+		return files
+	end
+end
 g.startify_lists = {
 	{ type = "dir", header = { " Recent in Current Directory (" .. vim.fn.getcwd() .. ")" } },
 	{ type = "files", header = { " Recently Opened" } },
 	{ type = "sessions", header = { " Sessions" } },
 	{ type = "bookmarks", header = { " Bookmarks" } },
 	{ type = "commands", header = { " Custom Commands" } },
-	-- Example of a custom function to list git modified files
-	-- This uses a Lua function directly, which is the correct way for dynamic lists in Lua.
+	-- Dynamic lists backed by git. vim.system takes an argv list, so there is no shell
+	-- to quote against and no need to redirect stderr: it is captured separately.
+	{ type = git_files({ "ls-files", "-m" }), header = { " Git Modified Files" } },
 	{
-		type = function()
-			local output = vim.fn.system("git ls-files -m 2>/dev/null")
-			local files = {}
-			for line in string.gmatch(output, "([^\n]+)") do
-				if line:find("^%s*$") == nil then
-					table.insert(files, { line = line, path = line })
-				end
-			end
-			return files
-		end,
-		header = { " Git Modified Files" },
-	},
-	-- Example of a custom function to list git untracked files
-	{
-		type = function()
-			local output = vim.fn.system("git ls-files -o --exclude-standard 2>/dev/null")
-			local files = {}
-			for line in string.gmatch(output, "([^\n]+)") do
-				if line:find("^%s*$") == nil then
-					table.insert(files, { line = line, path = line })
-				end
-			end
-			return files
-		end,
+		type = git_files({ "ls-files", "-o", "--exclude-standard" }),
 		header = { " Git Untracked Files" },
 	},
 }
 -- Session Management {{{
--- Enable session saving on exit.
--- Requires `mhinz/vim-session` or similar for full functionality if you want
--- to persist sessions outside of Startify's basic handling.
--- Startify integrates with `:mksession` by default.
-g.startify_session_dir = vim.fn.stdpath("data") .. "/sessions"
-g.startify_session_autoload = 1 -- Load session if one exists in the current directory
-g.startify_session_delete_entry = 1 -- Delete sessions when the project directory is removed
+g.startify_session_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "session")
+sessions.ensure_dir()
+g.startify_session_persistence = 1
+g.startify_session_sort = 1
+g.startify_session_before_save = {
+	"lua require('plugins.session_manager.sessions').close_side_panels()",
+}
 -- }}}
 -- Highlighting {{{
 vim.cmd([[highlight link StartifyHeader Normal]])
@@ -80,15 +79,17 @@ vim.cmd([[highlight link StartifyPath Comment]])
 vim.cmd([[highlight link StartifySelect Normal]])
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "startify",
-	callback = function()
+	callback = function(args)
 		vim.opt_local.list = false
+		sessions.map_dashboard(args.buf)
 	end,
+	desc = "Startify dashboard appearance and session actions",
 })
 --- }}}
 -- Bookmarks {{{
 local e = vim.fn.expand
 local j = vim.fs.joinpath
-local c = e("~/.var/app/dev.neovide.neovide/config/nvim")
+local c = vim.fn.stdpath("config")
 if utils.is_windows then
 	vim.g.startify_bookmarks = {
 		{ R = e("~/Source/Repos") },
@@ -107,16 +108,16 @@ else
 		{ T = j(c, "powershell/Microsoft.PowerShell_profile.ps1") },
 		{ t = j(c, "init.lua") },
 		{ W = j(c, "snippets/Snippets.json") },
-		{ w = j(c, "lua/config/Unix.lua") },
+		{ w = j(c, "lua/config/unix.lua") },
 		{ f = j(c, "after/plugin/keymaps.lua") },
 		{ d = j(c, "fish/config.fish") },
 		{ E = e("~/Source/Repos") },
-		{ e = j(c, "lua/config/Emacs/Vim/Abbreviations.vim") },
-		{ s = j(c, "lua/config/Past/IntelliJ.txt") },
-		{ l = j(c, "lua/config/Past/Windows IntelliJ.txt") },
-		{ z = j(c, "lua/config/Abbreviations.lua") },
-		{ p = j(c, "powershell/Microsoft.PowerShell_profile.ps1") },
-		{ x = j(c, "lua/config/Source/Repos/") },
+		{ m = j(c, "after/plugin/mini.lua") },
+		{ s = j(c, "IntelliJ/ideavimrc.txt") },
+		{ l = j(c, "IntelliJ/windows.txt") },
+		{ z = j(c, "plugin/packages.lua") },
+		{ p = j(c, "lua/plugins/session_manager/session_manager.lua") },
+		{ x = j(c, "fish/conf.d/abbreviations.fish") },
 		{ u = j(c, "lua/lib/utility.lua") },
 	}
 end

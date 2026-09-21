@@ -1,54 +1,58 @@
 --- Mini.nvim Configuration.
 --- Sets up various mini.* plugins for UI, editing, and utility enhancements.
---- Ensure mini.icons is setup early for other modules.
 --- @module "config.mini"
-
 require("mini.notify").setup()
 vim.notify = require("mini.notify").make_notify()
 require("mini.icons").setup()
-require("mini.sessions").setup({ autoread = true, autowrite = true })
-require("mini.align").setup()
-require("mini.move").setup({
-	mappings = {
-		left = "<M-h>",
-		right = "<M-l>",
-		down = "<M-j>",
-		up = "<M-k>",
-		line_left = "<M-h>",
-		line_right = "<M-l>",
-		line_down = "<M-j>",
-		line_up = "<M-k>",
-	},
-})
-require("mini.extra").setup()
-require("mini.misc").setup()
-require("mini.bracketed").setup()
-require("mini.bufremove").setup()
-require("mini.diff").setup({
-	view = { style = "sign", signs = { add = "+", change = "~", delete = "-" } },
-})
-require("mini.visits").setup()
-require("mini.map").setup()
-require("mini.git").setup()
-require("mini.completion").setup({
-	delay = { completion = 100, info = 300, signature = 50 },
-})
-require("mini.comment").setup()
-require("mini.pick").setup({
-	mappings = { choose_in_vsplit = "<C-CR>" },
-})
-require("mini.trailspace").setup()
-require("mini.cursorword").setup()
+require("mini.misc").setup_restore_cursor()
 require("mini.basics").setup({
 	options = { basic = true, extra_ui = true, win_borders = "default" },
 	mappings = { basic = true, option_toggle_prefix = [[\]], windows = true },
 	autocommands = { basic = true, relnum_in_visual_mode = true },
 })
+require("mini.statusline").setup()
+-- require('mini.tabline').setup()
 local function setup_deferred_modules()
+	require("mini.align").setup()
+	require("mini.move").setup({
+		mappings = {
+			left = "<M-h>",
+			right = "<M-l>",
+			down = "<M-j>",
+			up = "<M-k>",
+			line_left = "<M-h>",
+			line_right = "<M-l>",
+			line_down = "<M-j>",
+			line_up = "<M-k>",
+		},
+	})
+	require("mini.extra").setup()
+	require("mini.misc").setup()
+	require("mini.bracketed").setup()
+	require("mini.bufremove").setup()
+	require("mini.diff").setup({
+		view = { style = "sign", signs = { add = "+", change = "~", delete = "-" } },
+	})
+	require("mini.visits").setup()
+	require("mini.map").setup()
+	require("mini.git").setup()
+	require("mini.comment").setup()
+	require("mini.pick").setup({
+		mappings = { choose_in_vsplit = "<C-CR>" },
+	})
+	require("mini.trailspace").setup()
+	require("mini.cursorword").setup()
 	require("mini.ai").setup({
 		n_lines = 500,
 	})
-	require("mini.jump").setup()
+	require("mini.jump").setup({
+		mappings = {
+			forward = "l",
+			backward = "m",
+			forward_till = "t",
+			backward_till = "T",
+		},
+	})
 	require("mini.pairs").setup({
 		mappings = {
 			['"'] = false,
@@ -76,6 +80,11 @@ local function setup_deferred_modules()
 			{ mode = "n", keys = "[]" },
 		},
 		clues = {
+			{
+				mode = "n",
+				keys = require("plugins.session_manager.sessions").prefix,
+				desc = "+Session",
+			},
 			miniclue.gen_clues.builtin_completion(),
 			miniclue.gen_clues.g(),
 			miniclue.gen_clues.marks(),
@@ -138,11 +147,10 @@ local function setup_deferred_modules()
 	})
 	require("mini.jump2d").setup({
 		mappings = {
-			start_jumping = "A",
+			start_jumping = "v",
 		},
 	})
 end
-
 vim.api.nvim_create_autocmd("VimEnter", {
 	once = true,
 	callback = function()
@@ -150,20 +158,17 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	desc = "Initialize nonessential mini modules after startup",
 })
-
 vim.api.nvim_create_autocmd("User", {
 	pattern = "MiniFilesBufferCreate",
 	callback = function(args)
 		local map_buf = function(lhs, rhs)
-			vim.keymap.set("n", lhs, rhs, { buffer = args.data.buf_id })
+			vim.keymap.set("n", lhs, rhs, { buf = args.data.buf_id })
 		end
 		map_buf("<Esc>", MiniFiles.close)
 	end,
 	desc = "Escape key closes the MiniFiles buffer.",
 })
 -- ── Other ─────────────────────────────────────────────────────────────
--- now(function() require('mini.statusline').setup() end)
--- now(function() require('mini.tabline').setup() end)
 -- mini.doc, mini.fuzzy, mini.test are dev/authoring tools
 -- only enable if you're building plugins
 -- require("mini.doc").setup()

@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd("FileType", {
 --         vim.cmd([[silent !deno fmt ]] .. vim.fn.expand('%'))
 --     end
 -- })
-
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
 	callback = function()
@@ -30,18 +29,10 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 		-- You can still set foldcolumn, foldlevel, etc., as desired
 -- 	end,
 -- })
-vim.api.nvim_create_user_command("H", function(opts)
-	vim.cmd("help " .. opts.args)
-	vim.cmd("only")
-end, { nargs = 1, complete = "help" })
--- Autocmds are automatically loaded on the VeryLazy event
--- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
---
--- Add any additional autocmds here
--- with `vim.api.nvim_create_autocmd`
---
--- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
--- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+-- vim.api.nvim_create_user_command("H", function(opts)
+-- 	vim.cmd("help " .. opts.args)
+-- 	vim.cmd("only")
+-- end, { nargs = 1, complete = "help" })
 return M
 -- Footer
 -- vim:foldmethod=marker:foldlevel=1

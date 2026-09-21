@@ -1,1 +1,6 @@
-vim.opt.runtimepath:append("C:/Users/nateb/OneDrive/Documents/ADtb/Vim")
+--- Unix-only configuration (Linux and macOS).
+--- @module "config.unix"
+local M = {}
+return M
+-- Footer
+-- vim:foldmethod=marker:foldlevel=0
