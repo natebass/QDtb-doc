@@ -1,3 +1,10 @@
+---
+title: "XDG paths"
+description: "Where PowerShell loads configuration, modules and cache from on Linux"
+sidebar_label: "XDG paths"
+sidebar_position: 2
+---
+
 # Where does Powershell load the configuration?
 
 On Linux (including Linux Mint), PowerShell follows the **XDG Base Directory Specification**. These are dotfolders in your home directory.
