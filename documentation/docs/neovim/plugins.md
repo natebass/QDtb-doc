@@ -173,7 +173,7 @@ Four modules are bound to keys that already mean something in Vim. This is the
 single most surprising part of the configuration, and it is consistent once you
 see the shape of it: the home row is repurposed for motion, and what was there
 moves to a shifted key in
-[`after/plugin/keymaps.lua`](/docs/reference/after/plugin/keymaps).
+[`after/plugin/keymaps.lua`](/docs/neovim/keymaps).
 
 | Module | Binding | What it displaces | Where that went |
 |---|---|---|---|

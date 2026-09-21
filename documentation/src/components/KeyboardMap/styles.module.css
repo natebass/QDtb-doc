@@ -1,0 +1,425 @@
+/*
+ * The keyboard.
+ *
+ * Key sizing is one custom property: `--key-unit` is the width of an
+ * alphanumeric key, and every key is `calc(var(--key-unit) * var(--key-units))`
+ * wide. Shrinking the unit in a media query rescales the whole board, so there
+ * is no second layout to keep in step with the first.
+ */
+
+.root {
+  --key-gap: 0.3rem;
+  --status-mapped: var(--ifm-color-primary);
+  --status-prefix: #a855f7;
+  --status-conflict: #f59e0b;
+  --status-free: #10b981;
+
+  /* The board sizes itself off this element rather than the viewport: the doc
+     column is what constrains it, and that changes with the sidebar and the
+     table of contents, neither of which a media query can see. */
+  container-type: inline-size;
+  margin-block: 1.5rem 2rem;
+}
+
+/* ── Controls ────────────────────────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  margin-block-end: 1rem;
+}
+
+.control {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.control legend {
+  margin-block-end: 0.3rem;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.segmented,
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.segmented button,
+.chips button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--qdtb-surface-border);
+  border-radius: 8px;
+  background: var(--ifm-background-surface-color);
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.segmented button code {
+  padding: 0 0.25rem;
+  background: var(--ifm-color-emphasis-200);
+  font-size: 0.66rem;
+  opacity: 0.8;
+}
+
+.segmented button:hover,
+.chips button:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.segmented button[aria-pressed="true"],
+.chips button[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.segmented button[aria-pressed="true"] code {
+  background: rgb(255 255 255 / 0.22);
+  color: inherit;
+}
+
+.chips button {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.74rem;
+}
+
+/* ── Legend ──────────────────────────────────────────────────────────────── */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  margin-block-end: 0.85rem;
+  font-size: 0.75rem;
+}
+
+.legend span[data-status] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0.85;
+}
+
+.legend span[data-status]::before {
+  content: "";
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 4px;
+}
+
+.legend span[data-status="mapped"]::before {
+  background: var(--status-mapped);
+}
+
+.legend span[data-status="prefix"]::before {
+  background: var(--status-prefix);
+}
+
+.legend span[data-status="conflict"]::before {
+  background: var(--status-conflict);
+}
+
+.legend span[data-status="free"]::before {
+  background: color-mix(in srgb, var(--status-free) 24%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--status-free);
+}
+
+.count {
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+
+/* ── Board ───────────────────────────────────────────────────────────────── */
+
+.keyboard {
+  /* 15 units of main block, ~3.5 of cluster, and the gaps between them. */
+  --key-unit: clamp(1.5rem, calc((100cqi - 4rem) / 19.5), 3rem);
+
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  overflow-x: auto;
+  padding: 0.9rem;
+  border: 1px solid var(--qdtb-surface-border);
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+}
+
+.main,
+.cluster {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--key-gap);
+}
+
+.cluster {
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  gap: var(--key-gap);
+}
+
+.key {
+  --key-units: 1;
+
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  width: calc(
+    var(--key-unit) * var(--key-units) + var(--key-gap) *
+      (var(--key-units) - 1)
+  );
+  height: var(--key-unit);
+  padding: 0.2rem;
+  overflow: hidden;
+  border: 1px solid var(--qdtb-surface-border);
+  border-radius: 7px;
+  background: var(--ifm-background-color);
+  color: inherit;
+  font: inherit;
+  line-height: 1.1;
+  cursor: pointer;
+  transition:
+    transform 0.08s ease,
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.key:hover {
+  transform: translateY(-1px);
+}
+
+.key:active {
+  transform: translateY(0);
+}
+
+.keyLabel {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.keyHint {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.55rem;
+  letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+/* A wide key has room for a longer legend. */
+.key:where([style*="--key-units: 6"]) .keyLabel {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.key[data-status="free"] {
+  border-color: color-mix(in srgb, var(--status-free) 55%, transparent);
+  background: color-mix(in srgb, var(--status-free) 12%, transparent);
+}
+
+.key[data-status="mapped"] {
+  border-color: transparent;
+  background: var(--status-mapped);
+  color: #fff;
+}
+
+.key[data-status="prefix"] {
+  border-color: transparent;
+  background: var(--status-prefix);
+  color: #fff;
+}
+
+.key[data-status="conflict"] {
+  border-color: transparent;
+  background: var(--status-conflict);
+  color: #1f1300;
+}
+
+.key[data-selected] {
+  box-shadow:
+    0 0 0 2px var(--ifm-background-surface-color),
+    0 0 0 4px var(--ifm-color-primary);
+}
+
+.key[data-role="modifier"] {
+  background: var(--ifm-color-emphasis-100);
+  font-size: 0.7rem;
+}
+
+.key[data-role="modifier"][data-held] {
+  border-color: transparent;
+  background: var(--ifm-color-emphasis-700);
+  color: var(--ifm-background-color);
+  font-weight: 700;
+}
+
+.key[data-role="inert"] {
+  background: var(--ifm-color-emphasis-100);
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* ── Detail ──────────────────────────────────────────────────────────────── */
+
+.detail {
+  margin-block-start: 1.1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--qdtb-surface-border);
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+}
+
+.detailTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.detailTitle code {
+  font-size: 0.95rem;
+}
+
+.detailSub {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.detail .detailSub:first-child {
+  margin-block-start: 0;
+}
+
+.empty {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.mappings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mapping {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding-block-end: 0.6rem;
+  border-block-end: 1px solid var(--qdtb-surface-border);
+}
+
+.mappings .mapping:last-child {
+  padding-block-end: 0;
+  border-block-end: none;
+}
+
+.mappingLhs {
+  flex: none;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.mappingBody {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.mappingRhs {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.mappingDesc {
+  margin-block-start: 0.15rem;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+.mappingNote {
+  margin-block-start: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-inline-start: 3px solid var(--status-conflict);
+  border-radius: 0 6px 6px 0;
+  background: color-mix(in srgb, var(--status-conflict) 12%, transparent);
+  font-size: 0.78rem;
+}
+
+.mappingMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-start: 0.3rem;
+  font-size: 0.7rem;
+  font-family: var(--ifm-font-family-monospace);
+  opacity: 0.55;
+}
+
+/* ── Smaller screens ─────────────────────────────────────────────────────── */
+
+/* Below this the keys are too small for a second line of text on them. */
+@container (max-width: 56rem) {
+  .keyHint {
+    display: none;
+  }
+}
+
+@container (max-width: 34rem) {
+  .root {
+    --key-gap: 0.2rem;
+  }
+
+  .keyboard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cluster {
+    align-items: flex-start;
+  }
+
+  .count {
+    margin-inline-start: 0;
+  }
+}

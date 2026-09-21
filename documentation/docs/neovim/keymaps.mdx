@@ -1,0 +1,183 @@
+---
+title: "Keymaps"
+description: "Every mapping in the configuration, on a keyboard you can put into any mode, modifier and prefix state"
+sidebar_label: "Keymaps"
+sidebar_position: 30
+---
+
+import KeyboardMap from "@site/src/components/KeyboardMap";
+
+# Keymaps
+
+Pick a mode, hold some modifiers, choose a prefix. Keys that nothing in this
+configuration maps are outlined in green — those are the ones still available.
+Click any key to see what it does.
+
+<KeyboardMap />
+
+:::info[What "free" means here]
+Free means *this configuration does not map it*. Vim's own meaning for the key
+is still there: `c` is free in Normal mode in the sense that nothing here
+rebinds it, but it is still the change operator.
+
+The keyboard knows about `after/plugin/keymaps.lua`,
+`lua/plugins/session_manager/sessions.lua`, `fold_this`, and the mappings
+`mini.jump`, `mini.jump2d`, `mini.surround`, `mini.move`, `mini.comment` and
+`mini.basics` install. It does not know about `mini.bracketed`'s several dozen
+`[`/`]` suffixes, `mini.ai`'s text objects, or `mini.pairs`, which is why `[`
+and `]` look emptier than they are.
+:::
+
+## The idea behind the layout
+
+Most configurations add mappings. This one **moves** them, and the moves are
+what make the rest make sense.
+
+Four plugins were bound to keys that already meant something, because they are
+used constantly and the home row is where your fingers are:
+
+| Key | Now | Before |
+|---|---|---|
+| `l` | `mini.jump` forward — the old `f` | move right |
+| `m` | `mini.jump` backward — the old `F` | set a mark |
+| `v` | `mini.jump2d` — jump anywhere on screen | charwise Visual |
+| `s` | leap | substitute |
+
+Everything displaced landed on a shifted key, or on the leader:
+
+| Displaced | Moved to |
+|---|---|
+| `l` move right | `L` |
+| `h` move left | `,` — because `h` opens `mini.files` on the current file |
+| `m` set mark | `<leader>s` sets mark `a` |
+| `v` charwise Visual | `A` |
+| `V` linewise Visual | `a` |
+| `a` append | `I` |
+| `A` append at end of line | `V` |
+| `x` delete a character | `X` |
+| `f` find character | `l` (mini.jump), and `f` became the fold prefix |
+
+Read the second table as one rotation rather than nine separate decisions:
+the lower-case home row does motion and navigation, and the shifted key does
+what the lower-case one used to.
+
+Three more moves are worth knowing:
+
+- **`f` is the fold prefix.** `f` maps to `z`, so `ff` centres the line, `fj`
+  and `fk` put it at the top and bottom, and `ft` creates a fold. `z` itself
+  still works.
+- **`q` closes a window and `Q` quits everything.** Macro recording moved to
+  `<leader>r` (and `<leader>R` starts recording into `q`), and `x` replays it.
+- **`r` searches and `/` finds files.** `r` maps to `/`, and `/` opens
+  Telescope's file picker — so the key you reach for to "find something" finds
+  a file, and searching within the file is one key to the left.
+
+## Where the conflicts are
+
+Three mappings in this configuration are *shadowed*: an exact mapping exists,
+and so does a longer one starting with the same keys. Both work, but the short
+one has to wait [`'timeoutlen'`](/docs/neovim/options#timeoutlen) — 300 ms —
+before Vim gives up waiting for the longer one.
+
+| Key | Waits for | Cost |
+|---|---|---|
+| `<leader>w` (stylua) | `<leader>wd` (delete window) | 300 ms before formatting starts |
+| `<leader>f` (repeat last command) | `<leader>fn` (new file) | 300 ms |
+| `x` (replay the `q` macro) | `xa` `xd` `xf` `xF` `xh` `xr` (mini.surround) | 300 ms before the macro runs |
+
+The keyboard shows these in amber.
+
+There is also one mapping that is simply lost:
+
+:::warning[`<leader>z` is defined twice]
+Line 9 of `after/plugin/keymaps.lua` binds `<leader>z` to
+`plugins.QDtb.package_json.check_npm_project`. Line 70 binds the same key to
+the help prompt. The second wins, so the NPM project check has no key at all —
+it can only be reached with
+`:lua require("plugins.QDtb.package_json").check_npm_project()`.
+:::
+
+And two mappings that another plugin quietly takes over:
+
+- **`<A-j>` and `<A-k>`** are mapped in `keymaps.lua` for Normal, Insert and
+  Visual mode, but `mini.move` claims `<M-j>` and `<M-k>` — the same keys — in
+  Normal and Visual. `mini.move` is set up on `VimEnter`, after
+  `after/plugin/keymaps.lua` has run, so it wins everywhere except Insert mode.
+- **`<C-h>`, `<C-j>`, `<C-k>`, `<C-l>`** are set here *and* by `mini.basics`
+  with `windows = true`. Both go to the neighbouring window, so nothing is
+  visibly different.
+
+## Leader groups
+
+`<leader>` is Space. `mini.clue` pops up the list after
+[300 ms](/docs/neovim/options#timeoutlen), so the groups below are discoverable
+without this page — but the shape is worth seeing at once.
+
+### The alphabet block
+
+`<leader>` plus a letter is a flat, hand-assigned block, and the pattern is
+consistent once you see it: **lower case is the everyday action, upper case is
+the bigger or more explicit version of it.**
+
+| | lower case | upper case |
+|---|---|---|
+| `a` | Prettier the current file | *reserved* |
+| `d` | `:restart` | Telescope colour schemes |
+| `e` | `MiniPick.grep` | `MiniPick.files` |
+| `g` / `h` | Goyo with wrap / without wrap | `MiniPick.cli` / `MiniPick.help` |
+| `j` | recall the last command | run the last command |
+| `k` | recall the last search | open the search history window |
+| `l` | open the quickfix window | `MiniPick.grep_live` |
+| `n` | NERDTree | *reserved* |
+| `o` | `cd` to the file's directory | *reserved* |
+| `p` | `MiniExtra` colour schemes | *reserved* |
+| `r` | stop recording / pick a register | start recording into `q` |
+| `s` | set mark `a` | file-wide `:%s//` |
+| `v` | `TZNarrow` | *reserved* |
+| `w` | stylua | *reserved* |
+| `y` | Telescope live grep | Telescope find files |
+| `z` | help prompt, then `:only` | *reserved* |
+
+Ten upper-case letters — `A`, `I`, `N`, `O`, `P`, `Q`, `t`, `V`, `W`, `Y`, `Z`
+— are mapped to `""`, which is not the same as being free. An empty right-hand
+side is a real mapping that does nothing, and it is there on purpose: it stops
+`mini.clue` from offering the key and stops the timeout from waiting on it.
+
+### The sub-groups
+
+| Prefix | Group |
+|---|---|
+| `<leader>b` | Buffers — `bh` prev, `bl` next, `bb` alternate, `bD` delete |
+| `<leader>M` | [Sessions](/docs/neovim/custom/session-manager#keymaps) — labelled `+Session` in `mini.clue` |
+| `<leader><tab>` | Tab pages — `<tab>` new, `l` last, `f` first, `o` only, `[` `]` move, `d` close |
+| `<leader>u` | UI — `ui` inspect position, `uI` inspect tree, `ur` redraw and clear search |
+| `<leader>x` | Lists — `xl` location, `xq` quickfix |
+| `<leader>c` | Code — `cd` line diagnostics |
+| `<leader>q` | `qq` quit all |
+
+## Mappings outside the keyboard
+
+Two mappings use mouse buttons:
+
+| Button | Action |
+|---|---|
+| `<X1Mouse>` (back thumb) | `<C-o>` — jump backwards |
+| `<X2Mouse>` (forward thumb) | `<C-i>` — jump forwards |
+
+These exist because `<Tab>` is mapped to `za` by
+[`fold_this`](/docs/neovim/custom/fold-this), and a terminal cannot tell
+`<Tab>` and `<C-i>` apart. In a GUI such as Neovide the two are
+distinguishable and the mouse buttons are a convenience rather than a
+workaround.
+
+## Keeping this page accurate
+
+The mappings behind the keyboard live in
+[`documentation/src/data/keymaps.ts`](https://github.com/natebass/QDtb-doc/blob/master/documentation/src/data/keymaps.ts),
+transcribed by hand rather than parsed out of the Lua.
+
+That is deliberate. Half the right-hand sides in `after/plugin/keymaps.lua` are
+Lua functions, and "what this function does" is not something a parser can
+write — the useful column on this page is the one a parser could not produce.
+The trade is that the data file has to be updated when a mapping changes, which
+is the same trade the [colour theme data](/docs/neovim/color-themes) makes.

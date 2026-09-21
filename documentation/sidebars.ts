@@ -25,6 +25,10 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "doc",
+      id: "neovim/keymaps",
+    },
+    {
+      type: "doc",
       id: "neovim/plugins",
     },
     {
