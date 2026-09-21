@@ -134,25 +134,12 @@ const config: Config = {
           title: "Documentation",
           items: [
             {
-              label: "Lua API",
+              label: "Introduction",
               to: "/docs",
             },
             {
-              label: "Color Schemes",
-              to: "/docs/colors/minigrey",
-            },
-          ],
-        },
-        {
-          title: "Configuration",
-          items: [
-            {
-              label: "Keymaps",
-              to: "/docs/config/keymaps",
-            },
-            {
-              label: "Options",
-              to: "/docs/config/options",
+              label: "Lua Reference",
+              to: "/docs/reference",
             },
           ],
         },

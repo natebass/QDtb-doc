@@ -1,514 +1,309 @@
-import type { LuaModule, ColorScheme, GroupMap } from "./types.js";
-import { CONFIG_PAGES, PLUGINS_TO_CONSOLIDATE } from "./files.js";
+import type { LuaFunction, LuaModule, ReferenceDir } from "./types.js";
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+/**
+ * Rendering. One Lua file becomes one page, and the header comment is what
+ * that page leads with.
+ */
+
+// ── Escaping ─────────────────────────────────────────────────────────────────
+
+/**
+ * Make comment text safe to drop into Markdown.
+ *
+ * Generated pages are written as `.md`, which the site parses as CommonMark
+ * (`markdown.format: "detect"`), so braces need no special handling — but angle
+ * brackets do. Neovim comments are full of them (`<C-s>`, `<leader>`,
+ * `fun(): boolean`), and CommonMark reads those as raw HTML tags and drops
+ * them from the output.
+ */
+function escapeText(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** As `escapeText`, plus the pipe that would end a table cell early. */
+function escapeCell(text: string): string {
+  return escapeText(text).replace(/\|/g, "\\|");
+}
+
+/** A code span whose contents cannot break out of it. */
+function code(text: string): string {
+  // A backtick inside the span needs a longer fence around it.
+  const longest = [...text.matchAll(/`+/g)].reduce(
+    (max, match) => Math.max(max, match[0].length),
+    0,
+  );
+  const fence = "`".repeat(longest + 1);
+  const padding = text.startsWith("`") || text.endsWith("`") ? " " : "";
+  return `${fence}${padding}${text}${padding}${fence}`;
+}
+
+/**
+ * The URL Docusaurus will serve a generated page at.
+ *
+ * Docusaurus applies a category-index convention: a doc named `index`, or named
+ * after the folder that contains it, *is* that folder's page. So
+ * `reference/lua/plugins/fold_this/fold_this.md` is served at
+ * `/docs/reference/lua/plugins/fold_this`, and linking to the path the file
+ * name suggests gives a 404 the build rightly refuses to ship.
+ */
+export function docsUrl(referenceDir: string, docPath: string): string {
+  const segments = docPath.split("/");
+  const last = segments.at(-1);
+  const parent = segments.at(-2);
+  if (last === "index" || (parent !== undefined && last === parent)) {
+    segments.pop();
+  }
+  return `/docs/${[referenceDir, ...segments].join("/")}`;
+}
 
 /**
  * Quote a value for a YAML frontmatter field.
  *
- * Summaries and module names come from Lua comments and may contain quotes,
- * colons, or backslashes, any of which break the frontmatter parser if
- * interpolated raw. JSON string syntax is a valid subset of YAML's
- * double-quoted style, so it escapes all of these correctly.
+ * Summaries come from Lua comments and may contain quotes, colons or
+ * backslashes, any of which break the frontmatter parser if interpolated raw.
+ * JSON string syntax is a valid subset of YAML's double-quoted style.
  */
 function yamlString(value: string): string {
   return JSON.stringify(value ?? "");
 }
 
-/** Format a name for display: replace underscores with spaces and title-case */
-function toDisplayName(name: string): string {
-  return name.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
+// ── Module page ──────────────────────────────────────────────────────────────
 
 /**
- * Slugify a heading string the same way Docusaurus (github-slugger) does.
- * Keeps word chars and hyphens, strips everything else (dots, etc.),
- * replaces spaces with hyphens, and lowercases.
- */
-function headingSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-/**
- * Build a docs-relative link path for a given category/group/module.
+ * Whether a function is worth a section.
  *
- * All links are absolute from the docs root (prefixed with `/docs/`) so they
- * resolve correctly regardless of the linking page's slug.
- *
- * Special cases:
- * - When `groupName` is "index", it represents the category root
- *   (e.g. config/index.md → `/docs/config`), so the group segment is omitted.
- * - When `moduleName` matches `groupName`, the trailing segment is omitted
- *   so Docusaurus doesn't produce `/index` URLs.
+ * Everything a module exports is, because that is its API. A local helper only
+ * earns one when its author wrote something about it; the rest are
+ * implementation detail that the source itself shows better than a table can.
  */
-/**
- * Join docs path segments, applying Docusaurus's category-index convention:
- * a doc named `index` **or named after the folder that contains it** becomes
- * that folder's page. `docs/other/other.md` is therefore served at
- * `/docs/other`, not `/docs/other/other`.
- */
-function docsUrl(...segments: (string | undefined)[]): string {
-  const parts = segments.filter((s): s is string => !!s);
-  const last = parts.at(-1);
-  const parent = parts.at(-2);
-  if (last === "index" || (parent !== undefined && last === parent)) {
-    parts.pop();
-  }
-  return `/docs/${parts.join("/")}`;
+function isDocumented(fn: LuaFunction): boolean {
+  return !fn.isLocal || fn.summary.length > 0;
 }
 
-function docsLink(
-  category: string,
-  groupName: string,
-  moduleName?: string,
-): string {
-  // "index" groups represent the category root (e.g. config/index.md)
-  if (groupName === "index") {
-    return docsUrl(category, moduleName);
-  }
-  if (!moduleName || moduleName === groupName) {
-    return docsUrl(category, groupName);
-  }
-  return docsUrl(category, groupName, moduleName);
-}
-
-// ── Individual Module Markdown ───────────────────────────────────────────────
-
-export function generateModuleMarkdown(
+export function renderModulePage(
   mod: LuaModule,
-  hLevel: number = 1,
-  includeFrontmatter: boolean = true,
+  sourceBaseUrl: string,
 ): string {
   const lines: string[] = [];
+  const sourceUrl = `${sourceBaseUrl}/${mod.relativePath.split("\\").join("/")}`;
+  const functions = mod.functions.filter(isDocumented);
 
-  if (includeFrontmatter) {
-    lines.push("---");
-    lines.push(`title: ${yamlString(mod.moduleName || mod.name)}`);
-    lines.push(`description: ${yamlString(mod.summary)}`);
-    lines.push(`sidebar_label: ${yamlString(mod.name)}`);
-    lines.push("generated: true");
-    lines.push("---");
-    lines.push("");
-  }
+  const description = mod.summary || `${mod.relativePath} reference`;
 
-  lines.push(`${"#".repeat(hLevel)} ${mod.moduleName || mod.name}`);
+  lines.push("---");
+  lines.push(`title: ${yamlString(mod.moduleName)}`);
+  lines.push(`description: ${yamlString(description)}`);
+  lines.push(`sidebar_label: ${yamlString(mod.name)}`);
+  if (mod.name === "init") lines.push("sidebar_position: 1");
+  lines.push("generated: true");
+  lines.push("---");
   lines.push("");
+
+  lines.push(`# ${escapeText(mod.moduleName)}`);
+  lines.push("");
+
   if (mod.summary) {
-    lines.push(`> ${mod.summary}`);
+    lines.push(`> ${escapeText(mod.summary)}`);
     lines.push("");
   }
 
-  // Functions
-  if (mod.functions.length > 0) {
-    lines.push(`${"#".repeat(hLevel + 1)} Functions`);
-    lines.push("");
-    for (const fn of mod.functions) {
-      const paramStr = fn.params.map((p) => p.name).join(", ");
-      lines.push(`${"#".repeat(hLevel + 2)} \`${fn.name}(${paramStr})\``);
-      lines.push("");
-      if (fn.summary) {
-        lines.push(fn.summary);
-        lines.push("");
-      }
-      if (fn.params.length > 0) {
-        lines.push("**Parameters:**");
-        lines.push("");
-        lines.push("| Name | Type | Description |");
-        lines.push("|------|------|-------------|");
-        for (const p of fn.params) {
-          lines.push(`| \`${p.name}\` | \`${p.type}\` | ${p.description} |`);
-        }
-        lines.push("");
-      }
-      if (fn.returns.length > 0) {
-        lines.push("**Returns:**");
-        lines.push("");
-        for (const r of fn.returns) {
-          lines.push(`- \`${r.type}\` ${r.description}`);
-        }
-        lines.push("");
-      }
-      lines.push(`*Defined at line ${fn.lineNumber}*`);
-      lines.push("");
-      lines.push("---");
-      lines.push("");
-    }
-  }
-
-  // Source Code Link
-  lines.push(`${"#".repeat(hLevel + 1)} Source`);
-  lines.push("");
-  lines.push(
-    `[View Source on GitHub](https://github.com/natebass/QDtb/blob/master/${mod.relativePath})`,
-  );
-  lines.push("");
-
-  return lines.join("\n");
-}
-
-// ── Consolidated Config Markdown ─────────────────────────────────────────────
-
-export function generateInitConfigMarkdown(modules: LuaModule[]): string {
-  const lines: string[] = [];
-
-  lines.push("---");
-  lines.push('title: "Initialization"');
-  lines.push(
-    'description: "Neovim initialization, mini.nvim setup, and autocmds"',
-  );
-  lines.push('sidebar_label: "Init"');
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push("# Initialization");
-  lines.push("");
-
-  const initOrder = ["init", "mini", "autocmds"];
-  const filtered = modules.filter((m) =>
-    ["init", "mini", "autocmds", "other"].includes(m.name),
-  );
-  const sorted = [...filtered].sort((a, b) => {
-    if (a.relativePath === "init.lua") return -1;
-    if (b.relativePath === "init.lua") return 1;
-    const idxA = initOrder.indexOf(a.name);
-    const idxB = initOrder.indexOf(b.name);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    if (idxA !== -1) return -1;
-    if (idxB !== -1) return 1;
-    return a.name.localeCompare(b.name);
-  });
-
-  for (const mod of sorted) {
-    lines.push(generateModuleMarkdown(mod, 2, false));
-    lines.push("");
-    lines.push("---");
-    lines.push("");
-  }
-
-  return lines.join("\n");
-}
-
-export function generateOptionsConfigMarkdown(modules: LuaModule[]): string {
-  const lines: string[] = [];
-
-  lines.push("---");
-  lines.push('title: "Options"');
-  lines.push('description: "Neovim options and settings"');
-  lines.push('sidebar_label: "Options"');
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push("# Options");
-  lines.push("");
-
-  const mod = modules.find((m) => m.name === "options");
-  if (mod) {
-    lines.push(generateModuleMarkdown(mod, 2, false));
-  }
-
-  return lines.join("\n");
-}
-
-export function generateKeymapsConfigMarkdown(modules: LuaModule[]): string {
-  const lines: string[] = [];
-
-  lines.push("---");
-  lines.push('title: "Keymaps"');
-  lines.push('description: "Custom keybindings and mappings"');
-  lines.push('sidebar_label: "Keymaps"');
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push("# Keymaps");
-  lines.push("");
-
-  const mod = modules.find((m) => m.name === "keymaps");
-  if (mod) {
-    lines.push(generateModuleMarkdown(mod, 2, false));
-  }
-
-  return lines.join("\n");
-}
-
-// ── Category Index Markdown ──────────────────────────────────────────────────
-
-export function generateCategoryIndexMarkdown(
-  groupName: string,
-  modules: LuaModule[],
-  category: string,
-): string {
-  const lines: string[] = [];
-
-  const displayName = toDisplayName(groupName);
-  const sidebarLabel = groupName === "qdtb" ? "Miscellaneous" : "Overview";
-
-  const position = groupName === "qdtb" ? 40 : 1;
-
-  lines.push("---");
-  lines.push(`title: ${yamlString(displayName)}`);
-  lines.push(
-    `description: ${yamlString(`Overview of ${displayName} configuration`)}`,
-  );
-  lines.push(`sidebar_label: ${yamlString(sidebarLabel)}`);
-  lines.push(`sidebar_position: ${position}`);
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push(`# ${displayName}`);
-  lines.push("");
-  lines.push(`Documentation for modules in the \`${groupName}\` folder.`);
-  lines.push("");
-  lines.push("| Module | Description |");
-  lines.push("|--------|-------------|");
-  for (const mod of modules.sort((a, b) => a.name.localeCompare(b.name))) {
-    // Use absolute doc link so it works regardless of the current page's slug
-    const link = docsLink(category, groupName, mod.name);
-    lines.push(`| [${mod.name}](${link}) | ${mod.summary} |`);
-  }
-  lines.push("");
-
-  return lines.join("\n");
-}
-
-// ── Consolidated Module Markdown ─────────────────────────────────────────────
-
-export function generateConsolidatedModuleMarkdown(
-  groupName: string,
-  modules: LuaModule[],
-): string {
-  const lines: string[] = [];
-  const displayName = toDisplayName(groupName);
-
-  const positions: Record<string, number> = {
-    code_style: 10,
-    fold_this: 20,
-    session_manager: 30,
-  };
-  const position = positions[groupName] || 50;
-
-  lines.push("---");
-  lines.push(`title: ${yamlString(displayName)}`);
-  lines.push(
-    `description: ${yamlString(`Documentation for the ${displayName} plugin`)}`,
-  );
-  lines.push(`sidebar_label: ${yamlString(displayName)}`);
-  lines.push(`sidebar_position: ${position}`);
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-
-  if (modules.length === 1) {
-    const mod = modules[0];
-    const content = generateModuleMarkdown(mod, 1, false);
-    const contentLines = content.split("\n");
-    // Replace the first header line with the display name
-    contentLines[0] = `# ${displayName}`;
-    lines.push(contentLines.join("\n"));
-  } else {
-    lines.push(`# ${displayName}`);
-    lines.push("");
-
-    const sorted = [...modules].sort((a, b) => {
-      if (a.name === "init" || a.name === "all") return -1;
-      if (b.name === "init" || b.name === "all") return 1;
-      return a.name.localeCompare(b.name);
-    });
-
-    for (const mod of sorted) {
-      lines.push(generateModuleMarkdown(mod, 2, false));
-      lines.push("");
-      lines.push("---");
-      lines.push("");
-    }
-  }
-
-  return lines.join("\n");
-}
-
-// ── Color Scheme Markdown ────────────────────────────────────────────────────
-
-export function generateColorSchemeMarkdown(scheme: ColorScheme): string {
-  const lines: string[] = [];
-
-  lines.push("---");
-  lines.push(`title: ${yamlString(scheme.displayName)}`);
-  lines.push(`description: ${yamlString(scheme.description)}`);
-  lines.push(`sidebar_label: ${yamlString(scheme.displayName)}`);
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push(`import ColorPalette from '@site/src/components/ColorPalette';`);
-  lines.push(`import ColorPreview from '@site/src/components/ColorPreview';`);
-  lines.push("");
-  lines.push(`# ${scheme.displayName}`);
-  lines.push("");
-  lines.push(`> ${scheme.description}`);
-  lines.push("");
-
-  // All extracted colors
-  if (scheme.allColors.length > 0) {
-    const colorsJson = JSON.stringify(scheme.allColors);
-    lines.push("## Color Palette");
-    lines.push("");
-    lines.push(`<ColorPalette colors={${colorsJson}} />`);
-    lines.push("");
-  }
-
-  // Color palette component
-  if (scheme.bgDark && scheme.fgDark) {
-    lines.push("## Preview");
+  if (!mod.documented) {
+    lines.push(":::note[No header comment]");
     lines.push("");
     lines.push(
-      `<ColorPreview bgDark="${scheme.bgDark}" bgLight="${scheme.bgLight || "#e5e5e5"}" fgDark="${scheme.fgDark}" fgLight="${scheme.fgLight || "#333333"}" name="${scheme.displayName}" />`,
+      `${code(mod.relativePath)} does not open with a \`---\` documentation block, so ` +
+        "there is nothing in the file that says what it is for. Everything below is " +
+        "read off the code itself.",
     );
     lines.push("");
-  }
-
-  // Theme metadata
-  if (scheme.accent || scheme.saturation) {
-    lines.push("## Theme Properties");
-    lines.push("");
-    lines.push("| Property | Value |");
-    lines.push("|----------|-------|");
-    if (scheme.accent) lines.push(`| Accent | \`${scheme.accent}\` |`);
-    if (scheme.saturation)
-      lines.push(`| Saturation | \`${scheme.saturation}\` |`);
-    if (scheme.bgDark)
-      lines.push(`| Background (Dark) | \`${scheme.bgDark}\` |`);
-    if (scheme.bgLight)
-      lines.push(`| Background (Light) | \`${scheme.bgLight}\` |`);
-    if (scheme.fgDark)
-      lines.push(`| Foreground (Dark) | \`${scheme.fgDark}\` |`);
-    if (scheme.fgLight)
-      lines.push(`| Foreground (Light) | \`${scheme.fgLight}\` |`);
+    lines.push(":::");
     lines.push("");
   }
 
-  // Source Link
+  if (mod.description) {
+    lines.push(escapeText(mod.description));
+    lines.push("");
+  }
+
+  lines.push("## At a glance");
+  lines.push("");
+  lines.push("| | |");
+  lines.push("|---|---|");
+  if (mod.hasModuleTag) {
+    lines.push(`| Module | ${code(mod.moduleName)} |`);
+  } else {
+    lines.push(`| Module | ${code(mod.moduleName)} (inferred from the path) |`);
+  }
+  lines.push(`| File | [${code(mod.relativePath)}](${sourceUrl}) |`);
+  lines.push(`| Lines | ${mod.lineCount} |`);
+  lines.push(
+    `| Documented functions | ${functions.length === 0 ? "none" : functions.length} |`,
+  );
+  lines.push("");
+
+  if (functions.length > 0) {
+    lines.push("## Functions");
+    lines.push("");
+    for (const fn of functions) {
+      lines.push(...renderFunction(fn, sourceUrl));
+    }
+  }
+
   lines.push("## Source");
   lines.push("");
-  lines.push(
-    `[View Source on GitHub](https://github.com/natebass/QDtb/blob/master/colors/${scheme.filePath})`,
-  );
+  lines.push(`[View ${code(mod.relativePath)} on GitHub](${sourceUrl})`);
   lines.push("");
 
   return lines.join("\n");
 }
 
-// ── Root Index Markdown ──────────────────────────────────────────────────────
-
-export function generateIndexMarkdown(
-  groups: GroupMap,
-  colorSchemes: ColorScheme[],
-): string {
+function renderFunction(fn: LuaFunction, sourceUrl: string): string[] {
   const lines: string[] = [];
 
-  lines.push("---");
-  lines.push('title: "Module Index"');
-  lines.push(
-    'description: "Overview of all modules in the QDtb Neovim configuration"',
-  );
-  lines.push("sidebar_label: Index");
-  lines.push("sidebar_position: 999");
-  lines.push("generated: true");
-  lines.push("---");
-  lines.push("");
-  lines.push("# QDtb Neovim Configuration");
-  lines.push("");
-  lines.push(
-    "Auto-generated documentation from the QDtb Neovim Lua configuration files.",
-  );
+  lines.push(`### ${code(`${fn.name}(${fn.signature})`)}`);
   lines.push("");
 
-  // Group by category
-  const categories = new Map<string, string[]>();
-  for (const [groupKey, info] of groups) {
-    if (info.category === "colors") continue;
-    if (!categories.has(info.category)) categories.set(info.category, []);
-    categories.get(info.category)!.push(groupKey);
+  if (fn.isLocal) {
+    lines.push("*Local to the module.*");
+    lines.push("");
   }
 
-  const categoryLabels: Record<string, string> = {
-    config: "⚙️ Core Configuration",
-    plugins: "🔌 Plugins",
-    colors: "🎨 Color Schemes",
-    other: "📦 Other",
-  };
-
-  for (const [cat, groupKeys] of categories) {
-    lines.push(`## ${categoryLabels[cat] || cat}`);
+  if (fn.summary) {
+    lines.push(escapeText(fn.summary));
     lines.push("");
-    lines.push("| Page | Modules |");
-    lines.push("|------|---------|");
-    for (const groupKey of groupKeys.sort()) {
-      const info = groups.get(groupKey)!;
-      const groupName = info.groupName;
-      // "index" groups are category roots — use the category name for display
-      const displayName =
-        groupName === "index"
-          ? toDisplayName(info.category)
-          : toDisplayName(groupName);
+  }
 
-      // The core config group is written out as one page per CONFIG_PAGES
-      // entry, so link to those rather than to a `/docs/config` root that is
-      // never generated.
-      if (cat === "config" && groupName === "index") {
-        const pages = CONFIG_PAGES.map(
-          (page) => `[${page}](${docsLink(cat, groupName, page)})`,
-        ).join(", ");
-        lines.push(
-          `| [${displayName}](${docsLink(cat, groupName, CONFIG_PAGES[0])}) | ${pages} |`,
-        );
-        continue;
-      }
+  if (fn.description) {
+    lines.push(escapeText(fn.description));
+    lines.push("");
+  }
 
-      // Consolidated groups put all modules on one page (no individual pages)
-      const isConsolidated =
-        cat === "plugins" && PLUGINS_TO_CONSOLIDATE.includes(groupName);
-
-      const isFolder =
-        !isConsolidated &&
-        (info.modules.length > 1 || info.modules[0].name !== groupName);
-
-      // Link to the group's root page (no trailing /index)
-      const link = docsLink(cat, groupName);
-
-      const modulesList = info.modules
-        .map((m) => {
-          let mLink: string;
-          if (isConsolidated) {
-            // Anchor into the consolidated page using the heading slug
-            const anchor = headingSlug(m.moduleName || m.name);
-            mLink = `${link}#${anchor}`;
-          } else if (isFolder) {
-            mLink = docsLink(cat, groupName, m.name);
-          } else {
-            mLink = docsLink(cat, groupName);
-          }
-          return `[${m.name}](${mLink})`;
-        })
-        .join(", ");
-
-      lines.push(`| [${displayName}](${link}) | ${modulesList} |`);
+  if (fn.params.length > 0) {
+    lines.push("| Parameter | Type | Description |");
+    lines.push("|---|---|---|");
+    for (const param of fn.params) {
+      lines.push(
+        `| ${code(param.name)} | ${param.type ? code(param.type) : "—"} | ${escapeCell(param.description) || "—"} |`,
+      );
     }
     lines.push("");
   }
 
-  if (colorSchemes.length > 0) {
-    lines.push("## 🎨 Color Schemes");
+  if (fn.returns.length > 0) {
+    lines.push("**Returns**");
     lines.push("");
-    lines.push("| Scheme | Description | Dark BG | Light BG |");
-    lines.push("|--------|-------------|---------|----------|");
-    for (const cs of colorSchemes.sort((a, b) =>
-      a.displayName.localeCompare(b.displayName),
-    )) {
-      const link = docsLink("colors", cs.name);
+    for (const returned of fn.returns) {
+      const name = returned.name ? ` ${code(returned.name)}` : "";
+      const description = returned.description
+        ? ` — ${escapeText(returned.description)}`
+        : "";
+      lines.push(`- ${returned.type ? code(returned.type) : "value"}${name}${description}`);
+    }
+    lines.push("");
+  }
+
+  lines.push(`[Line ${fn.line}](${sourceUrl}#L${fn.line})`);
+  lines.push("");
+
+  return lines;
+}
+
+// ── Category metadata ────────────────────────────────────────────────────────
+
+export function renderCategory(dir: ReferenceDir): string {
+  return `${JSON.stringify(
+    {
+      label: dir.label,
+      position: dir.position,
+      collapsed: true,
+      link: null,
+    },
+    null,
+    2,
+  )}\n`;
+}
+
+// ── Reference index ──────────────────────────────────────────────────────────
+
+/**
+ * The reference's front page: what is in the configuration, and which parts of
+ * it still have nothing written about them.
+ */
+export function renderIndexPage(
+  modules: LuaModule[],
+  referenceDir: string,
+): string {
+  const lines: string[] = [];
+  const documented = modules.filter((mod) => mod.documented).length;
+
+  lines.push("---");
+  lines.push('title: "Lua Reference"');
+  lines.push(
+    'description: "Every Lua file in the configuration, described by its own header comment"',
+  );
+  lines.push('sidebar_label: "Overview"');
+  lines.push("sidebar_position: 0");
+  lines.push("generated: true");
+  lines.push("---");
+  lines.push("");
+  lines.push("# Lua Reference");
+  lines.push("");
+  lines.push(
+    "One page per Lua file, generated from the source on every build. Each page leads " +
+      "with the file's header comment, because that is the part that says why the file " +
+      "exists; exported functions and their parameters follow underneath.",
+  );
+  lines.push("");
+  lines.push(
+    `Of the ${modules.length} files in the configuration, ${documented} open with a ` +
+      "`---` documentation block. The rest still get a page — see " +
+      "[Undocumented files](#undocumented-files) for what is missing.",
+  );
+  lines.push("");
+
+  const byTopLevel = new Map<string, LuaModule[]>();
+  for (const mod of modules) {
+    const top = mod.docPath.includes("/")
+      ? mod.docPath.slice(0, mod.docPath.indexOf("/"))
+      : ".";
+    if (!byTopLevel.has(top)) byTopLevel.set(top, []);
+    byTopLevel.get(top)!.push(mod);
+  }
+
+  for (const [top, group] of [...byTopLevel.entries()].sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    lines.push(`## ${top === "." ? "Entry point" : code(`${top}/`)}`);
+    lines.push("");
+    lines.push("| File | Summary |");
+    lines.push("|---|---|");
+    for (const mod of group) {
       lines.push(
-        `| [${cs.displayName}](${link}) | ${cs.description} | \`${cs.bgDark || "—"}\` | \`${cs.bgLight || "—"}\` |`,
+        `| [${code(mod.relativePath)}](${docsUrl(referenceDir, mod.docPath)}) | ` +
+          `${escapeCell(mod.summary) || "—"} |`,
+      );
+    }
+    lines.push("");
+  }
+
+  const undocumented = modules.filter((mod) => !mod.documented);
+  lines.push("## Undocumented files");
+  lines.push("");
+  if (undocumented.length === 0) {
+    lines.push("Every file opens with a `---` header comment.");
+    lines.push("");
+  } else {
+    lines.push(
+      "These files have no `---` header, so nothing in the source says what they are " +
+        "for. They are listed here rather than hidden, because the list is the to-do.",
+    );
+    lines.push("");
+    for (const mod of undocumented) {
+      lines.push(
+        `- [${code(mod.relativePath)}](${docsUrl(referenceDir, mod.docPath)})`,
       );
     }
     lines.push("");

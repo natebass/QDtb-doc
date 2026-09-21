@@ -9,13 +9,9 @@ build/
 .cache-loader/
 luac.out
 
-# Generated documentation (by nvim-docusaurus)
-documentation/docs/colors/
-documentation/docs/config/
-documentation/docs/plugins/
-documentation/docs/other/
-documentation/docs/modules.md
-documentation/docs/_sidebar.json
+# Generated documentation (by nvim-docusaurus). The plugin owns this one
+# directory and rewrites it from scratch on every build.
+documentation/docs/reference/
 
 # Logs
 logs

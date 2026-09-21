@@ -12,32 +12,28 @@ import styles from "./index.module.css";
 
 const plugins = [
   {
-    id: "colorscheme-cycler",
-    emoji: "🎨",
-    title: "Colorscheme cycler",
+    id: "fold-this",
+    emoji: "📐",
+    title: "fold_this",
     description:
-      "Cycle through your exisiting installed color schemes with a keyboard shortcut.",
-    link: "/docs/plugins/QDtb",
+      "Tree-sitter folding with an indent fallback, a readable fold line, and jumps that land on closed folds rather than on fold boundaries.",
+    link: "/docs/reference/lua/plugins/fold_this",
   },
   {
-    id: "other-plugins",
-    title: "Other plugins",
-    description: (
-      <>
-        Some are still WIP.
-        <ul>
-          <li>
-            <Link to="/docs/plugins/code_style">
-              Language support and code style
-            </Link>
-          </li>
-          <li>
-            <Link to="/docs/plugins/QDtb">other</Link>
-          </li>
-        </ul>
-      </>
-    ),
-    selectable: false,
+    id: "session-manager",
+    emoji: "💾",
+    title: "session_manager",
+    description:
+      "A session store on top of vim-startify: save per directory, pick with mini.pick, and delete or rename without leaving the picker.",
+    link: "/docs/reference/lua/plugins/session_manager",
+  },
+  {
+    id: "code-style",
+    emoji: "🧵",
+    title: "code_style",
+    description:
+      "Tree-sitter highlighting, the lua_ls server, and per-filetype indentation that matches what Prettier would have written anyway.",
+    link: "/docs/reference/lua/plugins/code_style/init",
   },
   {
     id: "open-source-credits",
@@ -46,8 +42,8 @@ const plugins = [
       <>
         <b>Shout out to open-source plugins</b> like{" "}
         <Link to="https://github.com/echasnovski/mini.nvim">mini.nvim</Link>.
-        For a list of plugins included in QDtb, check out{" "}
-        <Link to="/docs/modules">this page</Link>.
+        For every file in the configuration, check out{" "}
+        <Link to="/docs/reference">the Lua reference</Link>.
       </>
     ),
     selectable: false,
