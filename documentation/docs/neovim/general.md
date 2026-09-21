@@ -250,4 +250,4 @@ one runtime directory doing real work — see
 | `.luarc.json` | lua-language-server settings for editing *this repository*: LuaJIT runtime, third-party checks off, and `vim`, `MiniFiles`, `MiniPick` and `MiniExtra` declared as globals so the server stops flagging them as undefined. |
 | `nvim-pack-lock.json` | `vim.pack`'s lockfile: one commit SHA per plugin, written by `vim.pack` itself. Committing it is what makes a clone reproduce the same plugin revisions. |
 | `LICENSE`, `NOTICE` | Licensing for the configuration and for the vendored material under `colors/` and `dkjson.lua`. |
-| `.gitignore` | Covers three ecosystems at once — Neovim's state, Emacs's byte-compiled and package output, and editor swap files. |
+| `.gitignore` | Covers three ecosystems at once — Neovim's state, Emacs's byte-compiled and package output, and editor swap files. See [Emacs](/docs/other/emacs#what-is-not-committed) for why the Emacs half is as long as it is. |

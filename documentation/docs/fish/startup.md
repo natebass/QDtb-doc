@@ -83,8 +83,7 @@ set -g fish_greeting ""
 
 :::note[Neovim is not the editor here]
 `$EDITOR` points at Emacs, not at Neovim, even though this repository is
-mostly a Neovim configuration. See the Emacs configuration in `GNU Emacs/` for what that
-side of things looks like.
+mostly a Neovim configuration. See [Emacs](/docs/other/emacs) for what that side of things looks like.
 
 `fish_greeting` is set with `-g`, not `-U`. The universal variable
 (`set -U fish_greeting ""`) is what most guides suggest, but it would be
