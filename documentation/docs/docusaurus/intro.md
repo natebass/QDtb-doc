@@ -13,7 +13,7 @@ Welcome to the documentation for the **QDtb** developer environment — a Neovim
 
 This documentation site is built with **Docusaurus 3** and a custom theme. It is automatically deployed via GitHub Actions whenever the master branch is updated.
 
-:::info Pro Tip
+:::info[Pro Tip]
 This documentation is automatically deployed via GitHub Actions whenever the master branch is updated.
 :::
 

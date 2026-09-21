@@ -1,0 +1,1954 @@
+{
+  "minigrey": {
+    "dark": {
+      "Normal": {
+        "fg": "#d3d4d5",
+        "bg": "#212223"
+      },
+      "NormalFloat": {
+        "fg": "#d3d4d5",
+        "bg": "#151617"
+      },
+      "CursorLine": {
+        "bg": "#3c3d3e"
+      },
+      "Visual": {
+        "bg": "#595a5b"
+      },
+      "Comment": {
+        "fg": "#939495"
+      },
+      "Constant": {
+        "fg": "#e4c9f0"
+      },
+      "String": {
+        "fg": "#c3deb6"
+      },
+      "Function": {
+        "fg": "#aaddf2"
+      },
+      "Identifier": {
+        "fg": "#e3d3a8"
+      },
+      "Keyword": {
+        "fg": "#d3d4d5",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#d3d4d5",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#d3d4d5"
+      },
+      "Special": {
+        "fg": "#a9e2d6"
+      },
+      "LineNr": {
+        "fg": "#595a5b"
+      },
+      "CursorLineNr": {
+        "fg": "#b6d8fa",
+        "bold": true
+      },
+      "Search": {
+        "fg": "#212223",
+        "bg": "#b6d8fa"
+      },
+      "IncSearch": {
+        "fg": "#212223",
+        "bg": "#e3d3a8"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#595a5b"
+      },
+      "Title": {
+        "fg": "#b6d8fa"
+      },
+      "Operator": {
+        "fg": "#d3d4d5"
+      },
+      "Number": {
+        "fg": "#e4c9f0"
+      },
+      "Boolean": {
+        "fg": "#e4c9f0"
+      },
+      "Pmenu": {
+        "fg": "#d3d4d5",
+        "bg": "#3c3d3e"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "fg": "#b3b4b5",
+        "bg": "#212223"
+      },
+      "ColorColumn": {
+        "bg": "#595a5b"
+      },
+      "Folded": {
+        "fg": "#939495",
+        "bg": "#151617"
+      },
+      "DiffAdd": {
+        "bg": "#142808"
+      },
+      "DiffChange": {
+        "bg": "#003830"
+      },
+      "DiffDelete": {
+        "bg": "#381420"
+      },
+      "DiagnosticError": {
+        "fg": "#f7c4d2"
+      },
+      "DiagnosticInfo": {
+        "fg": "#aaddf2"
+      },
+      "DiagnosticHint": {
+        "fg": "#a9e2d6"
+      },
+      "@keyword": {
+        "fg": "#d3d4d5",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#aaddf2"
+      },
+      "@variable": {
+        "fg": "#d3d4d5"
+      },
+      "@string": {
+        "fg": "#c3deb6"
+      },
+      "@comment": {
+        "fg": "#939495"
+      },
+      "@type": {
+        "fg": "#d3d4d5"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#f0f1f2"
+      },
+      "@keyword.return": {
+        "fg": "#b6d8fa",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#e4c9f0"
+      },
+      "DiagnosticWarn": {
+        "fg": "#e3d3a8"
+      }
+    },
+    "light": {
+      "Normal": {
+        "bg": "#e1e2e3",
+        "fg": "#2d2e2f"
+      },
+      "NormalFloat": {
+        "bg": "#ebeced",
+        "fg": "#2d2e2f"
+      },
+      "CursorLine": {
+        "bg": "#c1c2c3"
+      },
+      "Visual": {
+        "bg": "#a1a2a3"
+      },
+      "Comment": {
+        "fg": "#656667"
+      },
+      "Constant": {
+        "fg": "#441256"
+      },
+      "String": {
+        "fg": "#214900"
+      },
+      "Function": {
+        "fg": "#005c77"
+      },
+      "Identifier": {
+        "fg": "#665000"
+      },
+      "Keyword": {
+        "fg": "#2d2e2f",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#2d2e2f",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#2d2e2f"
+      },
+      "Special": {
+        "fg": "#006b5d"
+      },
+      "LineNr": {
+        "fg": "#a1a2a3"
+      },
+      "CursorLineNr": {
+        "fg": "#004170",
+        "bold": true
+      },
+      "Search": {
+        "bg": "#004170",
+        "fg": "#e1e2e3"
+      },
+      "IncSearch": {
+        "bg": "#665000",
+        "fg": "#e1e2e3"
+      },
+      "MatchParen": {
+        "bg": "#a1a2a3",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#004170"
+      },
+      "Operator": {
+        "fg": "#2d2e2f"
+      },
+      "Number": {
+        "fg": "#441256"
+      },
+      "Boolean": {
+        "fg": "#441256"
+      },
+      "Pmenu": {
+        "bg": "#c1c2c3",
+        "fg": "#2d2e2f"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#e1e2e3",
+        "fg": "#48494a"
+      },
+      "ColorColumn": {
+        "bg": "#a1a2a3"
+      },
+      "Folded": {
+        "bg": "#ebeced",
+        "fg": "#656667"
+      },
+      "DiffAdd": {
+        "bg": "#bff4a3"
+      },
+      "DiffChange": {
+        "bg": "#7bfce6"
+      },
+      "DiffDelete": {
+        "bg": "#ffb8d0"
+      },
+      "DiagnosticError": {
+        "fg": "#59012b"
+      },
+      "DiagnosticWarn": {
+        "fg": "#665000"
+      },
+      "DiagnosticInfo": {
+        "fg": "#005c77"
+      },
+      "DiagnosticHint": {
+        "fg": "#006b5d"
+      },
+      "@keyword": {
+        "fg": "#2d2e2f",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#005c77"
+      },
+      "@variable": {
+        "fg": "#2d2e2f"
+      },
+      "@string": {
+        "fg": "#214900"
+      },
+      "@comment": {
+        "fg": "#656667"
+      },
+      "@type": {
+        "fg": "#2d2e2f"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#0c0d0e"
+      },
+      "@keyword.return": {
+        "fg": "#004170",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#441256"
+      }
+    }
+  },
+  "miniautumn": {
+    "dark": {
+      "CursorLine": {
+        "bg": "#423b45"
+      },
+      "Visual": {
+        "bg": "#5e5762"
+      },
+      "Comment": {
+        "fg": "#97958e"
+      },
+      "Constant": {
+        "fg": "#d7cef9"
+      },
+      "String": {
+        "fg": "#d3daad"
+      },
+      "Function": {
+        "fg": "#a7e1e8"
+      },
+      "Identifier": {
+        "fg": "#efcfab"
+      },
+      "Keyword": {
+        "fg": "#d7d5cd",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#d7d5cd",
+        "bold": true
+      },
+      "Special": {
+        "fg": "#b4e2c7"
+      },
+      "LineNr": {
+        "fg": "#5e5762"
+      },
+      "CursorLineNr": {
+        "fg": "#e4caf1",
+        "bold": true
+      },
+      "Search": {
+        "bg": "#e4caf1",
+        "fg": "#262029"
+      },
+      "IncSearch": {
+        "bg": "#efcfab",
+        "fg": "#262029"
+      },
+      "MatchParen": {
+        "bg": "#5e5762",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#e4caf1"
+      },
+      "Operator": {
+        "fg": "#d7d5cd"
+      },
+      "Number": {
+        "fg": "#d7cef9"
+      },
+      "Boolean": {
+        "fg": "#d7cef9"
+      },
+      "Pmenu": {
+        "bg": "#423b45",
+        "fg": "#d7d5cd"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#3a0f2f",
+        "fg": "#b7b5ad"
+      },
+      "ColorColumn": {
+        "bg": "#5e5762"
+      },
+      "Folded": {
+        "bg": "#1a141d",
+        "fg": "#97958e"
+      },
+      "DiffAdd": {
+        "bg": "#323700"
+      },
+      "DiffChange": {
+        "bg": "#003c24"
+      },
+      "DiffDelete": {
+        "bg": "#3a0f2f"
+      },
+      "DiagnosticError": {
+        "fg": "#f1c6e2"
+      },
+      "DiagnosticWarn": {
+        "fg": "#efcfab"
+      },
+      "DiagnosticInfo": {
+        "fg": "#b8d9fc"
+      },
+      "DiagnosticHint": {
+        "fg": "#b4e2c7"
+      },
+      "@keyword": {
+        "fg": "#d7d5cd",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#a7e1e8"
+      },
+      "@variable": {
+        "fg": "#d7d5cd"
+      },
+      "@string": {
+        "fg": "#d3daad"
+      },
+      "@comment": {
+        "fg": "#97958e"
+      },
+      "@type": {
+        "fg": "#d7d5cd"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#fac6c1"
+      },
+      "@keyword.return": {
+        "fg": "#fac6c1",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#d7cef9"
+      },
+      "Type": {
+        "fg": "#d7d5cd"
+      },
+      "Normal": {
+        "bg": "#262029",
+        "fg": "#d7d5cd"
+      },
+      "NormalFloat": {
+        "bg": "#1a141d",
+        "fg": "#d7d5cd"
+      }
+    },
+    "light": {
+      "Comment": {
+        "fg": "#686661"
+      },
+      "Constant": {
+        "fg": "#351962"
+      },
+      "String": {
+        "fg": "#4b5400"
+      },
+      "Function": {
+        "fg": "#006a74"
+      },
+      "Identifier": {
+        "fg": "#6c4300"
+      },
+      "Keyword": {
+        "bold": true,
+        "fg": "#2f2e29"
+      },
+      "Statement": {
+        "bold": true,
+        "fg": "#2f2e29"
+      },
+      "Type": {
+        "fg": "#2f2e29"
+      },
+      "Special": {
+        "fg": "#005e3d"
+      },
+      "LineNr": {
+        "fg": "#a4a0a6"
+      },
+      "CursorLineNr": {
+        "bold": true,
+        "fg": "#431256"
+      },
+      "Search": {
+        "bg": "#431256",
+        "fg": "#e5e1e7"
+      },
+      "IncSearch": {
+        "bg": "#6c4300",
+        "fg": "#e5e1e7"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#a4a0a6"
+      },
+      "Title": {
+        "fg": "#431256"
+      },
+      "Operator": {
+        "fg": "#2f2e29"
+      },
+      "Number": {
+        "fg": "#351962"
+      },
+      "Boolean": {
+        "fg": "#351962"
+      },
+      "Pmenu": {
+        "bg": "#c5c1c7",
+        "fg": "#2f2e29"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#ffb0e9",
+        "fg": "#4a4944"
+      },
+      "ColorColumn": {
+        "bg": "#a4a0a6"
+      },
+      "Folded": {
+        "bg": "#eeeaf0",
+        "fg": "#686661"
+      },
+      "DiffAdd": {
+        "bg": "#ddf069"
+      },
+      "DiffChange": {
+        "bg": "#7bffc2"
+      },
+      "DiffDelete": {
+        "bg": "#ffb0e9"
+      },
+      "DiagnosticError": {
+        "fg": "#52073f"
+      },
+      "DiagnosticWarn": {
+        "fg": "#6c4300"
+      },
+      "DiagnosticHint": {
+        "fg": "#005e3d"
+      },
+      "@keyword": {
+        "bold": true,
+        "fg": "#2f2e29"
+      },
+      "@function": {
+        "fg": "#006a74"
+      },
+      "@variable": {
+        "fg": "#2f2e29"
+      },
+      "@string": {
+        "fg": "#4b5400"
+      },
+      "@comment": {
+        "fg": "#686661"
+      },
+      "@type": {
+        "fg": "#2f2e29"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#5c0207"
+      },
+      "@keyword.return": {
+        "bold": true,
+        "fg": "#5c0207"
+      },
+      "@constant": {
+        "fg": "#351962"
+      },
+      "DiagnosticInfo": {
+        "fg": "#003b6d"
+      },
+      "Normal": {
+        "bg": "#e5e1e7",
+        "fg": "#2f2e29"
+      },
+      "NormalFloat": {
+        "bg": "#eeeaf0",
+        "fg": "#2f2e29"
+      },
+      "CursorLine": {
+        "bg": "#c5c1c7"
+      },
+      "Visual": {
+        "bg": "#a4a0a6"
+      }
+    }
+  },
+  "minispring": {
+    "dark": {
+      "@constant": {
+        "fg": "#f7c2ea"
+      },
+      "Normal": {
+        "bg": "#1c2617",
+        "fg": "#d2d5db"
+      },
+      "NormalFloat": {
+        "bg": "#101a0b",
+        "fg": "#d2d5db"
+      },
+      "CursorLine": {
+        "bg": "#374231"
+      },
+      "Visual": {
+        "bg": "#535f4d"
+      },
+      "Comment": {
+        "fg": "#92959b"
+      },
+      "Constant": {
+        "fg": "#f7c2ea"
+      },
+      "String": {
+        "fg": "#abe5be"
+      },
+      "Function": {
+        "fg": "#a9d8ff"
+      },
+      "Identifier": {
+        "fg": "#d8da9d"
+      },
+      "Keyword": {
+        "fg": "#d2d5db",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#d2d5db",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#d2d5db"
+      },
+      "Special": {
+        "fg": "#94e5ea"
+      },
+      "LineNr": {
+        "fg": "#535f4d"
+      },
+      "CursorLineNr": {
+        "fg": "#bee2ad",
+        "bold": true
+      },
+      "Search": {
+        "bg": "#bee2ad",
+        "fg": "#1c2617"
+      },
+      "IncSearch": {
+        "bg": "#d8da9d",
+        "fg": "#1c2617"
+      },
+      "MatchParen": {
+        "bg": "#535f4d",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#bee2ad"
+      },
+      "Operator": {
+        "fg": "#d2d5db"
+      },
+      "Number": {
+        "fg": "#f7c2ea"
+      },
+      "Boolean": {
+        "fg": "#f7c2ea"
+      },
+      "Pmenu": {
+        "bg": "#374231",
+        "fg": "#d2d5db"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#00381d",
+        "fg": "#b2b5bb"
+      },
+      "ColorColumn": {
+        "bg": "#535f4d"
+      },
+      "Folded": {
+        "bg": "#101a0b",
+        "fg": "#92959b"
+      },
+      "DiffAdd": {
+        "bg": "#00381d"
+      },
+      "DiffChange": {
+        "bg": "#004c4f"
+      },
+      "DiffDelete": {
+        "bg": "#410d12"
+      },
+      "DiagnosticError": {
+        "fg": "#ffc1bf"
+      },
+      "DiagnosticWarn": {
+        "fg": "#d8da9d"
+      },
+      "DiagnosticInfo": {
+        "fg": "#d3ccff"
+      },
+      "DiagnosticHint": {
+        "fg": "#94e5ea"
+      },
+      "@keyword": {
+        "fg": "#d2d5db",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#a9d8ff"
+      },
+      "@variable": {
+        "fg": "#d2d5db"
+      },
+      "@string": {
+        "fg": "#abe5be"
+      },
+      "@comment": {
+        "fg": "#92959b"
+      },
+      "@type": {
+        "fg": "#d2d5db"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#facb9e"
+      },
+      "@keyword.return": {
+        "fg": "#facb9e",
+        "bold": true
+      }
+    },
+    "light": {
+      "Normal": {
+        "bg": "#e0e4de",
+        "fg": "#2c2e33"
+      },
+      "NormalFloat": {
+        "bg": "#e9ede7",
+        "fg": "#2c2e33"
+      },
+      "CursorLine": {
+        "bg": "#c0c4be"
+      },
+      "Visual": {
+        "bg": "#a0a39e"
+      },
+      "Comment": {
+        "fg": "#64666c"
+      },
+      "Constant": {
+        "fg": "#600051"
+      },
+      "String": {
+        "fg": "#006d3f"
+      },
+      "Function": {
+        "fg": "#005085"
+      },
+      "Identifier": {
+        "fg": "#676900"
+      },
+      "Keyword": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#2c2e33"
+      },
+      "Special": {
+        "fg": "#007f86"
+      },
+      "LineNr": {
+        "fg": "#a0a39e"
+      },
+      "CursorLineNr": {
+        "fg": "#2e5e00",
+        "bold": true
+      },
+      "Search": {
+        "bg": "#2e5e00",
+        "fg": "#e0e4de"
+      },
+      "IncSearch": {
+        "bg": "#676900",
+        "fg": "#e0e4de"
+      },
+      "MatchParen": {
+        "bg": "#a0a39e",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#2e5e00"
+      },
+      "Operator": {
+        "fg": "#2c2e33"
+      },
+      "Number": {
+        "fg": "#600051"
+      },
+      "Boolean": {
+        "fg": "#600051"
+      },
+      "Pmenu": {
+        "bg": "#c0c4be",
+        "fg": "#2c2e33"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#80ffb8",
+        "fg": "#47494f"
+      },
+      "ColorColumn": {
+        "bg": "#a0a39e"
+      },
+      "Folded": {
+        "bg": "#e9ede7",
+        "fg": "#64666c"
+      },
+      "DiffAdd": {
+        "bg": "#80ffb8"
+      },
+      "DiffChange": {
+        "bg": "#72f6ff"
+      },
+      "DiffDelete": {
+        "bg": "#ffaaa7"
+      },
+      "DiagnosticError": {
+        "fg": "#700015"
+      },
+      "DiagnosticWarn": {
+        "fg": "#676900"
+      },
+      "DiagnosticInfo": {
+        "fg": "#350775"
+      },
+      "DiagnosticHint": {
+        "fg": "#007f86"
+      },
+      "@keyword": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#005085"
+      },
+      "@variable": {
+        "fg": "#2c2e33"
+      },
+      "@string": {
+        "fg": "#006d3f"
+      },
+      "@comment": {
+        "fg": "#64666c"
+      },
+      "@type": {
+        "fg": "#2c2e33"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#804c00"
+      },
+      "@constant": {
+        "fg": "#600051"
+      },
+      "@keyword.return": {
+        "fg": "#804c00",
+        "bold": true
+      }
+    }
+  },
+  "minisummer": {
+    "dark": {
+      "LineNr": {
+        "fg": "#605855"
+      },
+      "CursorLineNr": {
+        "fg": "#f6cc9b",
+        "bold": true
+      },
+      "Search": {
+        "fg": "#27211e",
+        "bg": "#f6cc9b"
+      },
+      "IncSearch": {
+        "fg": "#27211e",
+        "bg": "#f6cc9b"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#ffc1b9"
+      },
+      "@keyword.return": {
+        "fg": "#ffc1b9",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#d8caff"
+      },
+      "@type": {
+        "fg": "#d2d4db"
+      },
+      "@comment": {
+        "fg": "#93949b"
+      },
+      "@string": {
+        "fg": "#d1db9f"
+      },
+      "@variable": {
+        "fg": "#d2d4db"
+      },
+      "@function": {
+        "fg": "#93e4ee"
+      },
+      "@keyword": {
+        "fg": "#d2d4db",
+        "bold": true
+      },
+      "DiagnosticHint": {
+        "fg": "#a6e5c3"
+      },
+      "DiagnosticInfo": {
+        "fg": "#acd6ff"
+      },
+      "DiagnosticWarn": {
+        "fg": "#f6cc9b"
+      },
+      "DiagnosticError": {
+        "fg": "#fac0e4"
+      },
+      "Normal": {
+        "fg": "#d2d4db",
+        "bg": "#27211e"
+      },
+      "NormalFloat": {
+        "fg": "#d2d4db",
+        "bg": "#1b1512"
+      },
+      "CursorLine": {
+        "bg": "#433c39"
+      },
+      "Visual": {
+        "bg": "#605855"
+      },
+      "Comment": {
+        "fg": "#93949b"
+      },
+      "Constant": {
+        "fg": "#d8caff"
+      },
+      "String": {
+        "fg": "#d1db9f"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#605855"
+      },
+      "Title": {
+        "fg": "#f6cc9b"
+      },
+      "Operator": {
+        "fg": "#d2d4db"
+      },
+      "Number": {
+        "fg": "#d8caff"
+      },
+      "Boolean": {
+        "fg": "#d8caff"
+      },
+      "Pmenu": {
+        "fg": "#d2d4db",
+        "bg": "#433c39"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "fg": "#b2b4bb",
+        "bg": "#492c00"
+      },
+      "ColorColumn": {
+        "bg": "#605855"
+      },
+      "Folded": {
+        "fg": "#93949b",
+        "bg": "#1b1512"
+      },
+      "DiffAdd": {
+        "bg": "#313600"
+      },
+      "DiffChange": {
+        "bg": "#003d26"
+      },
+      "DiffDelete": {
+        "bg": "#3a0f2e"
+      },
+      "Function": {
+        "fg": "#93e4ee"
+      },
+      "Identifier": {
+        "fg": "#f6cc9b"
+      },
+      "Keyword": {
+        "fg": "#d2d4db",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#d2d4db",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#d2d4db"
+      },
+      "Special": {
+        "fg": "#a6e5c3"
+      }
+    },
+    "light": {
+      "Boolean": {
+        "fg": "#370674"
+      },
+      "Pmenu": {
+        "fg": "#2c2e33",
+        "bg": "#c9c1bd"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "fg": "#47494f",
+        "bg": "#ffc888"
+      },
+      "ColorColumn": {
+        "bg": "#a8a19d"
+      },
+      "Folded": {
+        "fg": "#64666c",
+        "bg": "#f2eae6"
+      },
+      "DiffAdd": {
+        "bg": "#e3ee65"
+      },
+      "DiffChange": {
+        "bg": "#7fffbd"
+      },
+      "DiffDelete": {
+        "bg": "#ffb2ee"
+      },
+      "DiagnosticError": {
+        "fg": "#61004f"
+      },
+      "DiagnosticWarn": {
+        "fg": "#804e00"
+      },
+      "DiagnosticInfo": {
+        "fg": "#004d84"
+      },
+      "DiagnosticHint": {
+        "fg": "#006f44"
+      },
+      "@keyword": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#007e87"
+      },
+      "@variable": {
+        "fg": "#2c2e33"
+      },
+      "@string": {
+        "fg": "#636900"
+      },
+      "@comment": {
+        "fg": "#64666c"
+      },
+      "@type": {
+        "fg": "#2c2e33"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#700011"
+      },
+      "@keyword.return": {
+        "fg": "#700011",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#370674"
+      },
+      "Normal": {
+        "fg": "#2c2e33",
+        "bg": "#e9e1dd"
+      },
+      "NormalFloat": {
+        "fg": "#2c2e33",
+        "bg": "#f2eae6"
+      },
+      "CursorLine": {
+        "bg": "#c9c1bd"
+      },
+      "Visual": {
+        "bg": "#a8a19d"
+      },
+      "Comment": {
+        "fg": "#64666c"
+      },
+      "Constant": {
+        "fg": "#370674"
+      },
+      "String": {
+        "fg": "#636900"
+      },
+      "Function": {
+        "fg": "#007e87"
+      },
+      "Identifier": {
+        "fg": "#804e00"
+      },
+      "Keyword": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#2c2e33",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#2c2e33"
+      },
+      "Special": {
+        "fg": "#006f44"
+      },
+      "LineNr": {
+        "fg": "#a8a19d"
+      },
+      "CursorLineNr": {
+        "fg": "#804e00",
+        "bold": true
+      },
+      "Search": {
+        "fg": "#e9e1dd",
+        "bg": "#804e00"
+      },
+      "IncSearch": {
+        "fg": "#e9e1dd",
+        "bg": "#804e00"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#a8a19d"
+      },
+      "Title": {
+        "fg": "#804e00"
+      },
+      "Operator": {
+        "fg": "#2c2e33"
+      },
+      "Number": {
+        "fg": "#370674"
+      }
+    }
+  },
+  "miniwinter": {
+    "dark": {
+      "Comment": {
+        "fg": "#98948e"
+      },
+      "Constant": {
+        "fg": "#edc7e7"
+      },
+      "String": {
+        "fg": "#b8e1c1"
+      },
+      "Function": {
+        "fg": "#b3daf9"
+      },
+      "Keyword": {
+        "fg": "#d8d4cd",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#d8d4cd",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#d8d4cd"
+      },
+      "Special": {
+        "fg": "#a6e1e2"
+      },
+      "LineNr": {
+        "fg": "#485f67"
+      },
+      "CursorLineNr": {
+        "fg": "#b3daf9",
+        "bold": true
+      },
+      "Search": {
+        "bg": "#b3daf9",
+        "fg": "#11262d"
+      },
+      "IncSearch": {
+        "bg": "#d9d8aa",
+        "fg": "#11262d"
+      },
+      "MatchParen": {
+        "bg": "#485f67",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#b3daf9"
+      },
+      "Operator": {
+        "fg": "#d8d4cd"
+      },
+      "Number": {
+        "fg": "#edc7e7"
+      },
+      "Boolean": {
+        "fg": "#edc7e7"
+      },
+      "Pmenu": {
+        "bg": "#2c4249",
+        "fg": "#d8d4cd"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "bg": "#00324f",
+        "fg": "#b8b4ad"
+      },
+      "ColorColumn": {
+        "bg": "#485f67"
+      },
+      "Folded": {
+        "bg": "#051a20",
+        "fg": "#98948e"
+      },
+      "DiffAdd": {
+        "bg": "#003415"
+      },
+      "DiffChange": {
+        "bg": "#004c4e"
+      },
+      "DiffDelete": {
+        "bg": "#410d14"
+      },
+      "DiagnosticError": {
+        "fg": "#fac5c7"
+      },
+      "DiagnosticWarn": {
+        "fg": "#d9d8aa"
+      },
+      "DiagnosticInfo": {
+        "fg": "#d1cffb"
+      },
+      "DiagnosticHint": {
+        "fg": "#a6e1e2"
+      },
+      "@keyword": {
+        "fg": "#d8d4cd",
+        "bold": true
+      },
+      "@function": {
+        "fg": "#b3daf9"
+      },
+      "@variable": {
+        "fg": "#d8d4cd"
+      },
+      "@string": {
+        "fg": "#b8e1c1"
+      },
+      "@comment": {
+        "fg": "#98948e"
+      },
+      "@type": {
+        "fg": "#d8d4cd"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#f2ccad"
+      },
+      "@keyword.return": {
+        "fg": "#f2ccad",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#edc7e7"
+      },
+      "Identifier": {
+        "fg": "#d9d8aa"
+      },
+      "Normal": {
+        "bg": "#11262d",
+        "fg": "#d8d4cd"
+      },
+      "NormalFloat": {
+        "bg": "#051a20",
+        "fg": "#d8d4cd"
+      },
+      "CursorLine": {
+        "bg": "#2c4249"
+      },
+      "Visual": {
+        "bg": "#485f67"
+      }
+    },
+    "light": {
+      "@function": {
+        "fg": "#014772"
+      },
+      "@variable": {
+        "fg": "#312e29"
+      },
+      "@string": {
+        "fg": "#00562e"
+      },
+      "@comment": {
+        "fg": "#6a6661"
+      },
+      "@type": {
+        "fg": "#312e29"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#6c3e00"
+      },
+      "@keyword.return": {
+        "fg": "#6c3e00",
+        "bold": true
+      },
+      "@constant": {
+        "fg": "#4f0b46"
+      },
+      "@keyword": {
+        "fg": "#312e29",
+        "bold": true
+      },
+      "Constant": {
+        "fg": "#4f0b46"
+      },
+      "String": {
+        "fg": "#00562e"
+      },
+      "Function": {
+        "fg": "#014772"
+      },
+      "Visual": {
+        "bg": "#9ca4a7"
+      },
+      "Comment": {
+        "fg": "#6a6661"
+      },
+      "Normal": {
+        "fg": "#312e29",
+        "bg": "#dce4e8"
+      },
+      "NormalFloat": {
+        "fg": "#312e29",
+        "bg": "#e5edf1"
+      },
+      "CursorLine": {
+        "bg": "#bcc4c8"
+      },
+      "Identifier": {
+        "fg": "#565600"
+      },
+      "Keyword": {
+        "fg": "#312e29",
+        "bold": true
+      },
+      "Statement": {
+        "fg": "#312e29",
+        "bold": true
+      },
+      "Type": {
+        "fg": "#312e29"
+      },
+      "Special": {
+        "fg": "#016d71"
+      },
+      "LineNr": {
+        "fg": "#9ca4a7"
+      },
+      "CursorLineNr": {
+        "fg": "#014772",
+        "bold": true
+      },
+      "Search": {
+        "fg": "#dce4e8",
+        "bg": "#014772"
+      },
+      "IncSearch": {
+        "fg": "#dce4e8",
+        "bg": "#565600"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#9ca4a7"
+      },
+      "Title": {
+        "fg": "#014772"
+      },
+      "Operator": {
+        "fg": "#312e29"
+      },
+      "Number": {
+        "fg": "#4f0b46"
+      },
+      "Boolean": {
+        "fg": "#4f0b46"
+      },
+      "Pmenu": {
+        "fg": "#312e29",
+        "bg": "#bcc4c8"
+      },
+      "PmenuSel": {
+        "reverse": true
+      },
+      "StatusLine": {
+        "fg": "#4c4944",
+        "bg": "#90ceff"
+      },
+      "ColorColumn": {
+        "bg": "#9ca4a7"
+      },
+      "Folded": {
+        "fg": "#6a6661",
+        "bg": "#e5edf1"
+      },
+      "DiffAdd": {
+        "bg": "#83ffb3"
+      },
+      "DiffChange": {
+        "bg": "#6af9ff"
+      },
+      "DiffDelete": {
+        "bg": "#ffaaaa"
+      },
+      "DiagnosticError": {
+        "fg": "#5c0113"
+      },
+      "DiagnosticWarn": {
+        "fg": "#565600"
+      },
+      "DiagnosticInfo": {
+        "fg": "#301d65"
+      },
+      "DiagnosticHint": {
+        "fg": "#016d71"
+      }
+    }
+  },
+  "neovim_colors": {
+    "dark": {
+      "Statement": {
+        "bold": true
+      },
+      "DiagnosticWarn": {
+        "fg": "#fce094"
+      },
+      "Special": {
+        "fg": "#8cf8f7"
+      },
+      "LineNr": {
+        "fg": "#4f5258"
+      },
+      "CursorLineNr": {
+        "bold": true
+      },
+      "Search": {
+        "fg": "#eef1f8",
+        "bg": "#6b5300"
+      },
+      "IncSearch": {
+        "fg": "#07080d",
+        "bg": "#fce094"
+      },
+      "MatchParen": {
+        "bg": "#4f5258",
+        "bold": true
+      },
+      "@comment": {
+        "fg": "#9b9ea4"
+      },
+      "@keyword.return": {
+        "bold": true
+      },
+      "@field": {
+        "fg": "#a6dbff"
+      },
+      "@string": {
+        "fg": "#b3f6c0"
+      },
+      "@function": {
+        "fg": "#8cf8f7"
+      },
+      "Keyword": {
+        "bold": true
+      },
+      "Identifier": {
+        "fg": "#a6dbff"
+      },
+      "Function": {
+        "fg": "#8cf8f7"
+      },
+      "String": {
+        "fg": "#b3f6c0"
+      },
+      "@keyword": {
+        "bold": true
+      },
+      "Comment": {
+        "fg": "#9b9ea4"
+      },
+      "Visual": {
+        "bg": "#4f5258"
+      },
+      "CursorLine": {
+        "bg": "#2c2e33"
+      },
+      "DiagnosticHint": {
+        "fg": "#a6dbff"
+      },
+      "DiagnosticError": {
+        "fg": "#ffc0b9"
+      },
+      "Title": {
+        "bold": true
+      },
+      "DiagnosticInfo": {
+        "fg": "#8cf8f7"
+      },
+      "Normal": {
+        "fg": "#e0e2ea",
+        "bg": "#14161b"
+      },
+      "NormalFloat": {
+        "bg": "#07080d"
+      },
+      "Pmenu": {
+        "bg": "#2c2e33"
+      },
+      "PmenuSel": {
+        "fg": "#2c2e33",
+        "bg": "#e0e2ea"
+      },
+      "StatusLine": {
+        "fg": "#c4c6cd",
+        "bg": "#07080d"
+      },
+      "ColorColumn": {
+        "bg": "#4f5258"
+      },
+      "Folded": {
+        "fg": "#9b9ea4",
+        "bg": "#2c2e33"
+      },
+      "DiffAdd": {
+        "fg": "#eef1f8",
+        "bg": "#005523"
+      },
+      "DiffChange": {
+        "fg": "#eef1f8",
+        "bg": "#4f5258"
+      },
+      "DiffDelete": {
+        "fg": "#ffc0b9",
+        "bold": true
+      }
+    },
+    "light": {
+      "Pmenu": {
+        "bg": "#c4c6cd"
+      },
+      "PmenuSel": {
+        "bg": "#14161b",
+        "fg": "#c4c6cd"
+      },
+      "StatusLine": {
+        "bg": "#eef1f8",
+        "fg": "#2c2e33"
+      },
+      "ColorColumn": {
+        "bg": "#9b9ea4"
+      },
+      "Folded": {
+        "bg": "#c4c6cd",
+        "fg": "#4f5258"
+      },
+      "DiffAdd": {
+        "bg": "#b3f6c0",
+        "fg": "#07080d"
+      },
+      "DiffChange": {
+        "bg": "#9b9ea4",
+        "fg": "#07080d"
+      },
+      "DiffDelete": {
+        "bold": true,
+        "fg": "#590008"
+      },
+      "DiagnosticError": {
+        "fg": "#590008"
+      },
+      "DiagnosticWarn": {
+        "fg": "#6b5300"
+      },
+      "DiagnosticInfo": {
+        "fg": "#007373"
+      },
+      "DiagnosticHint": {
+        "fg": "#004c73"
+      },
+      "@keyword": {
+        "bold": true
+      },
+      "@function": {
+        "fg": "#007373"
+      },
+      "@string": {
+        "fg": "#005523"
+      },
+      "@comment": {
+        "fg": "#4f5258"
+      },
+      "@keyword.return": {
+        "bold": true
+      },
+      "@field": {
+        "fg": "#004c73"
+      },
+      "Normal": {
+        "bg": "#e0e2ea",
+        "fg": "#14161b"
+      },
+      "NormalFloat": {
+        "bg": "#eef1f8"
+      },
+      "CursorLine": {
+        "bg": "#c4c6cd"
+      },
+      "Visual": {
+        "bg": "#9b9ea4"
+      },
+      "Comment": {
+        "fg": "#4f5258"
+      },
+      "String": {
+        "fg": "#005523"
+      },
+      "Function": {
+        "fg": "#007373"
+      },
+      "Identifier": {
+        "fg": "#004c73"
+      },
+      "Statement": {
+        "bold": true
+      },
+      "Special": {
+        "fg": "#007373"
+      },
+      "LineNr": {
+        "fg": "#9b9ea4"
+      },
+      "CursorLineNr": {
+        "bold": true
+      },
+      "Search": {
+        "bg": "#fce094",
+        "fg": "#07080d"
+      },
+      "IncSearch": {
+        "bg": "#6b5300",
+        "fg": "#eef1f8"
+      },
+      "MatchParen": {
+        "bold": true,
+        "bg": "#9b9ea4"
+      },
+      "Title": {
+        "bold": true
+      },
+      "Keyword": {
+        "bold": true
+      }
+    }
+  },
+  "nordstone": {
+    "dark": {
+      "Folded": {
+        "fg": "#81a1c1"
+      },
+      "DiffAdd": {
+        "bg": "#202a18"
+      },
+      "DiffChange": {
+        "bg": "#262626"
+      },
+      "DiffDelete": {
+        "bg": "#3c181c"
+      },
+      "DiagnosticError": {
+        "fg": "#bf616a"
+      },
+      "DiagnosticWarn": {
+        "fg": "#ebcb8b"
+      },
+      "DiagnosticInfo": {
+        "fg": "#5e81ac"
+      },
+      "DiagnosticHint": {
+        "fg": "#81a1c1"
+      },
+      "@keyword": {
+        "fg": "#81a1c1"
+      },
+      "@function": {
+        "fg": "#88c0d0"
+      },
+      "@variable": {
+        "fg": "#e0e2ea"
+      },
+      "@string": {
+        "fg": "#a3be8c"
+      },
+      "@comment": {
+        "fg": "#616e88"
+      },
+      "@type": {
+        "fg": "#88c0d0"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#8c97ad"
+      },
+      "@keyword.return": {
+        "fg": "#81a1c1"
+      },
+      "@constant": {
+        "fg": "#ebcb8b"
+      },
+      "Normal": {
+        "fg": "#d8dee9"
+      },
+      "NormalFloat": {
+        "fg": "#d8dee9"
+      },
+      "CursorLine": {
+        "bg": "#262626"
+      },
+      "Visual": {
+        "bg": "#3b4252",
+        "fg": "#d8dee9"
+      },
+      "Comment": {
+        "fg": "#616e88"
+      },
+      "Constant": {
+        "fg": "#ebcb8b"
+      },
+      "String": {
+        "fg": "#a3be8c"
+      },
+      "Function": {
+        "fg": "#88c0d0"
+      },
+      "Identifier": {
+        "fg": "#81a1c1"
+      },
+      "Keyword": {
+        "fg": "#81a1c1"
+      },
+      "Statement": {
+        "fg": "#81a1c1"
+      },
+      "Type": {
+        "fg": "#88c0d0"
+      },
+      "Special": {
+        "fg": "#81a1c1"
+      },
+      "LineNr": {
+        "fg": "#71717a"
+      },
+      "CursorLineNr": {
+        "fg": "#d8dee9"
+      },
+      "Search": {
+        "bg": "#434c5e"
+      },
+      "IncSearch": {
+        "bg": "#81a1c1",
+        "fg": "#3b4252"
+      },
+      "MatchParen": {
+        "fg": "#ebcb8b",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#d8dee9"
+      },
+      "Operator": {
+        "fg": "#81a1c1"
+      },
+      "Number": {
+        "fg": "#b48ead"
+      },
+      "Boolean": {
+        "fg": "#81a1c1"
+      },
+      "Pmenu": {
+        "fg": "#d8dee9"
+      },
+      "PmenuSel": {
+        "bg": "#81a1c1",
+        "fg": "#2e3440"
+      },
+      "StatusLine": {
+        "fg": "#b7becb"
+      }
+    },
+    "light": {
+      "StatusLine": {
+        "fg": "#b7becb"
+      },
+      "Folded": {
+        "fg": "#81a1c1"
+      },
+      "DiffAdd": {
+        "bg": "#202a18"
+      },
+      "DiffChange": {
+        "bg": "#262626"
+      },
+      "DiffDelete": {
+        "bg": "#3c181c"
+      },
+      "DiagnosticWarn": {
+        "fg": "#ebcb8b"
+      },
+      "DiagnosticInfo": {
+        "fg": "#5e81ac"
+      },
+      "DiagnosticHint": {
+        "fg": "#81a1c1"
+      },
+      "@keyword": {
+        "fg": "#81a1c1"
+      },
+      "@function": {
+        "fg": "#88c0d0"
+      },
+      "@variable": {
+        "fg": "#14161b"
+      },
+      "@string": {
+        "fg": "#a3be8c"
+      },
+      "@comment": {
+        "fg": "#616e88"
+      },
+      "@type": {
+        "fg": "#88c0d0"
+      },
+      "@punctuation.delimiter": {
+        "fg": "#8c97ad"
+      },
+      "@keyword.return": {
+        "fg": "#81a1c1"
+      },
+      "@constant": {
+        "fg": "#ebcb8b"
+      },
+      "DiagnosticError": {
+        "fg": "#bf616a"
+      },
+      "Normal": {
+        "fg": "#d8dee9"
+      },
+      "NormalFloat": {
+        "fg": "#d8dee9"
+      },
+      "CursorLine": {
+        "bg": "#262626"
+      },
+      "Visual": {
+        "bg": "#3b4252",
+        "fg": "#d8dee9"
+      },
+      "Comment": {
+        "fg": "#616e88"
+      },
+      "Constant": {
+        "fg": "#ebcb8b"
+      },
+      "String": {
+        "fg": "#a3be8c"
+      },
+      "Function": {
+        "fg": "#88c0d0"
+      },
+      "Identifier": {
+        "fg": "#81a1c1"
+      },
+      "Keyword": {
+        "fg": "#81a1c1"
+      },
+      "Statement": {
+        "fg": "#81a1c1"
+      },
+      "Type": {
+        "fg": "#88c0d0"
+      },
+      "Special": {
+        "fg": "#81a1c1"
+      },
+      "LineNr": {
+        "fg": "#71717a"
+      },
+      "CursorLineNr": {
+        "fg": "#d8dee9"
+      },
+      "Search": {
+        "bg": "#434c5e"
+      },
+      "IncSearch": {
+        "bg": "#81a1c1",
+        "fg": "#3b4252"
+      },
+      "MatchParen": {
+        "fg": "#ebcb8b",
+        "bold": true
+      },
+      "Title": {
+        "fg": "#d8dee9"
+      },
+      "Operator": {
+        "fg": "#81a1c1"
+      },
+      "Number": {
+        "fg": "#b48ead"
+      },
+      "Boolean": {
+        "fg": "#81a1c1"
+      },
+      "Pmenu": {
+        "fg": "#d8dee9"
+      },
+      "PmenuSel": {
+        "bg": "#81a1c1",
+        "fg": "#2e3440"
+      }
+    }
+  }
+}

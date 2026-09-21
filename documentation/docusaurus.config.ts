@@ -105,7 +105,7 @@ const config: Config = {
           type: "docSidebar",
           sidebarId: "configSidebar",
           position: "left",
-          label: "Config",
+          label: "Neovim",
         },
         {
           type: "docSidebar",

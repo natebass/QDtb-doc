@@ -16,6 +16,33 @@ const sidebars: SidebarsConfig = {
       label: "Introduction",
     },
     {
+      type: "doc",
+      id: "neovim/general",
+    },
+    {
+      type: "doc",
+      id: "neovim/options",
+    },
+    {
+      type: "doc",
+      id: "neovim/plugins",
+    },
+    {
+      type: "category",
+      label: "Custom Plugins",
+      link: { type: "doc", id: "neovim/custom/index" },
+      collapsed: false,
+      items: [
+        "neovim/custom/fold-this",
+        "neovim/custom/session-manager",
+        "neovim/custom/code-style",
+      ],
+    },
+    {
+      type: "doc",
+      id: "neovim/color-themes",
+    },
+    {
       type: "category",
       label: "Lua Reference",
       collapsed: true,
