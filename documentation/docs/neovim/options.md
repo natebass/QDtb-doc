@@ -256,9 +256,9 @@ layout.
 empty quickfix list.
 
 **Relationship.** Telescope and `mini.pick` run ripgrep themselves and do not
-read these, so `:grep` and `<leader>e` can behave differently. Telescope's own
-arguments in `after/plugin/other.lua` add `--glob=!node_modules/**`,
-`!.next/**` and `!out/**`; plain `:grep` has no such exclusions.
+read these, so `:grep` and `<leader>e` can differ — mainly on case, since the
+pickers add `--smart-case` and `:grep` does not. All three skip what
+`.gitignore` lists, because that is ripgrep's own default.
 
 ## Files
 

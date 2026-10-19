@@ -27,24 +27,6 @@ require("telescope").setup({
 			i = { ["<Esc>"] = require("telescope.actions").close },
 		},
 	},
-	vimgrep_arguments = {
-		"rg",
-		"--color=never",
-		"--no-heading",
-		"--with-filename",
-		"--line-number",
-		"--column",
-		"--smart-case",
-		"--glob=!node_modules/**",
-		"--glob=!.next/**",
-		"--glob=!out/**",
-	},
-
-	file_ignore_patterns = {
-		"node_modules/",
-		"%.next/",
-		"out/",
-	},
 })
 -- }}}
 -- Footer

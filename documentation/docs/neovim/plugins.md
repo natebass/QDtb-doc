@@ -264,35 +264,13 @@ to anything.
 ```lua
 require("telescope").setup({
   defaults = { mappings = { i = { ["<Esc>"] = require("telescope.actions").close } } },
-  vimgrep_arguments = { ... },
-  file_ignore_patterns = { ... },
 })
 ```
 
-`<Esc>` closes the picker from Insert mode instead of dropping to Normal mode,
-which is the only change that is actually in effect.
-
-:::danger[`vimgrep_arguments` and `file_ignore_patterns` are not applied]
-Both sit beside `defaults` rather than inside it. `telescope.setup()` passes
-only `opts.defaults` to `telescope.config.set_defaults()` and ignores every
-other top-level key, so these two tables are read by nobody.
-
-The intent was to keep `node_modules/`, `.next/` and `out/` out of grep and
-find results. Moving both keys inside `defaults` is the fix:
-
-```lua
-require("telescope").setup({
-  defaults = {
-    mappings = { i = { ["<Esc>"] = require("telescope.actions").close } },
-    vimgrep_arguments = { ... },
-    file_ignore_patterns = { ... },
-  },
-})
-```
-
-`mini.pick`, which is bound to more keys than Telescope here, is unaffected —
-it honours `.gitignore` through its own ripgrep invocation.
-:::
+`<Esc>` closes the picker from Insert mode instead of dropping to Normal mode.
+That is the only change. There is no ignore list: Telescope's pickers run
+ripgrep, which already skips everything in `.gitignore`, hidden files and
+binaries.
 
 ### Telescope or mini.pick?
 

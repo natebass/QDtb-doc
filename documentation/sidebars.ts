@@ -44,6 +44,10 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "doc",
+      id: "neovim/workflows",
+    },
+    {
+      type: "doc",
       id: "neovim/color-themes",
     },
     {
