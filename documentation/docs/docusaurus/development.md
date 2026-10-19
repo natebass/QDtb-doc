@@ -25,8 +25,9 @@ one rather than failing:
 }
 ```
 
-Neither Lua nor LDoc is needed to build the site, despite what the repository
-README has historically said — see [The LDoc files](/docs/docusaurus/ldoc).
+Neither Lua nor LDoc is needed to build the site. The repository README used
+to list both, for files that have since been removed — see
+[The LDoc files](/docs/docusaurus/ldoc).
 
 Neovim is only needed to regenerate the
 [colour theme previews](/docs/neovim/color-themes), which are committed.

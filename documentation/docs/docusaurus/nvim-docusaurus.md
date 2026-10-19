@@ -144,7 +144,6 @@ rule.
 | `parser/` | Compiled tree-sitter objects |
 | `colors/domscheme-main/` | A vendored terminal-palette drop |
 | `node_modules/`, `.git/`, `.vscode/`, dotfolders | |
-| `dkjson.lua`, `dump.lua` | Third-party Lua and tool output — [described by hand instead](/docs/docusaurus/ldoc) |
 
 ## Why it is all synchronous
 

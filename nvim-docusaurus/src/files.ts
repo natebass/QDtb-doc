@@ -20,17 +20,6 @@ const SKIP_DIRS = new Set([
 ]);
 
 /**
- * Third-party Lua that ships with the configuration without being part of it.
- *
- * `dkjson.lua` is David Kolf's JSON module, which LDoc loads to write its
- * machine-readable output; `dump.lua` is one of those outputs. Documenting
- * either would describe the documentation toolchain as if it were editor
- * configuration, so both are described by hand in the Documentation section
- * instead.
- */
-const SKIP_FILES = new Set(["dkjson.lua", "dump.lua"]);
-
-/**
  * Where each top-level directory sits in the reference.
  *
  * The order is Neovim's own startup order rather than the alphabet: what
@@ -70,7 +59,6 @@ export function findLuaFiles(root: string): string[] {
       }
       if (!entry.isFile()) continue;
       if (!entry.name.endsWith(".lua")) continue;
-      if (SKIP_FILES.has(entry.name)) continue;
       found.push(path.join(dir, entry.name));
     }
   };

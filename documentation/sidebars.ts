@@ -76,7 +76,6 @@ const sidebars: SidebarsConfig = {
   ],
   otherSidebar: [
     "other/index",
-    "other/vscode",
     {
       type: "category",
       label: "Emacs",
@@ -85,7 +84,7 @@ const sidebars: SidebarsConfig = {
       items: ["other/emacs-melpa"],
     },
     "other/intellij",
-    "other/templates",
+    "other/vscode",
     {
       type: "category",
       label: "Documentation",
@@ -97,6 +96,7 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+    "other/templates",
   ],
 };
 

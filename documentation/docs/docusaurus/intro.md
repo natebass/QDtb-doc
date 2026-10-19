@@ -46,7 +46,7 @@ a root `package.json` that forwards the common scripts to them.
 | [Development](/docs/docusaurus/development) | Prerequisites, install, the commands, and what to do when a build fails |
 | [The site](/docs/docusaurus/site) | `package.json`, `docusaurus.config.ts`, the theme and the components |
 | [nvim-docusaurus](/docs/docusaurus/nvim-docusaurus) | The plugin that generates the Lua reference |
-| [The LDoc files](/docs/docusaurus/ldoc) | `config.ld`, `dump.lua` and `dkjson.lua` — what they are, and what still uses them |
+| [The LDoc files](/docs/docusaurus/ldoc) | `config.ld`, `dump.lua` and `dkjson.lua` — what they were, and why they were removed |
 | [Deployment](/docs/docusaurus/deployment) | `.github/workflows/deploy.yml` and GitHub Pages |
 
 ## Keeping the copy in sync
