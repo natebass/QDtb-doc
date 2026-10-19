@@ -1,6 +1,6 @@
 ---
 title: "Other"
-description: "VS Code, Emacs, IntelliJ and the templates directory"
+description: "VS Code, Emacs, IntelliJ, the templates directory and this site"
 sidebar_label: "Overview"
 sidebar_position: 1
 ---
@@ -16,6 +16,7 @@ The parts of `QDtb/` that are not Neovim, Fish or PowerShell.
 | [MELPA](/docs/other/emacs-melpa) | The package archive, and why its downloads are not committed | Complete |
 | [IntelliJ](/docs/other/intellij) | IdeaVim for the JetBrains IDEs | Stub |
 | [Templates](/docs/other/templates) | Starter files for new projects | Stub |
+| [Documentation](/docs/docusaurus/intro) | This site, and the QDtb-doc repository behind it | Complete |
 
 ## Why one configuration repository
 
